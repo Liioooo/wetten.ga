@@ -12,7 +12,7 @@ import { auth } from 'firebase/app';
 })
 export class AuthService {
 
-  private _user$: Observable<User>;
+  private readonly _user$: Observable<User>;
 
   constructor(private fireAuth: AngularFireAuth, private fireStore: AngularFirestore, private router: Router) {
       this._user$ = this.fireAuth.authState.pipe(

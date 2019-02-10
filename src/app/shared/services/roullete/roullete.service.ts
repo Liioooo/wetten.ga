@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
+import {AngularFireDatabase} from '@angular/fire/database';
 import {Observable} from 'rxjs';
 import {Roll} from '../../models/Roll';
 
@@ -9,7 +9,7 @@ import {Roll} from '../../models/Roll';
 export class RouletteService {
 
 
-    private _rollHistory$: Observable<Roll[]>;
+    private readonly _rollHistory$: Observable<Roll[]>;
 
     constructor(private database: AngularFireDatabase) {
         this._rollHistory$ = database.list<Roll>('/rolls').valueChanges();

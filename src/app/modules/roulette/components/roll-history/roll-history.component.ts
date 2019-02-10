@@ -11,9 +11,6 @@ export class RollHistoryComponent implements OnInit {
   constructor(public rouletteService: RouletteService) { }
 
   ngOnInit() {
-    // this.rouletteService.getRollHistory().subscribe(data => {
-    //   console.log(data[0]);
-    // });
   }
 
 }
