@@ -1,0 +1,18 @@
+.roller-container {
+
+  position: relative;
+
+  .roller {
+    background-image: url("/assets/cases.png");
+    height: 75px;
+  }
+
+  .pointer {
+    width: 3px;
+    background: #000000;
+    position: absolute;
+    left: calc(50% - 3px);
+    top: 0;
+    height: 75px;
+  }
+}

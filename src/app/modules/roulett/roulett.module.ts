@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { RoulettRoutingModule } from './roulett-routing.module';
 import { RoulettComponent } from './components/roulett/roulett.component';
+import { RoulettRollerComponent } from './components/roulett-roller/roulett-roller.component';
 
 @NgModule({
-  declarations: [RoulettComponent],
+  declarations: [RoulettComponent, RoulettRollerComponent],
   imports: [
     CommonModule,
     RoulettRoutingModule
