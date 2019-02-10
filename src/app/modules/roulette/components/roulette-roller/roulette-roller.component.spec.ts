@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SharedCComponent } from './shared.component';
+import { RouletteRollerComponent } from './roulette-roller.component';
 
-describe('SharedCComponent', () => {
-  let component: SharedCComponent;
-  let fixture: ComponentFixture<SharedCComponent>;
+describe('RoulettRollerComponent', () => {
+  let component: RouletteRollerComponent;
+  let fixture: ComponentFixture<RouletteRollerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SharedCComponent ]
+      declarations: [ RouletteRollerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SharedCComponent);
+    fixture = TestBed.createComponent(RouletteRollerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

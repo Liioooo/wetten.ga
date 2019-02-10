@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoulettComponent } from './roulett.component';
+import { RollHistoryComponent } from './roll-history.component';
 
-describe('RoulettComponent', () => {
-  let component: RoulettComponent;
-  let fixture: ComponentFixture<RoulettComponent>;
+describe('RollHistoryComponent', () => {
+  let component: RollHistoryComponent;
+  let fixture: ComponentFixture<RollHistoryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoulettComponent ]
+      declarations: [ RollHistoryComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RoulettComponent);
+    fixture = TestBed.createComponent(RollHistoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

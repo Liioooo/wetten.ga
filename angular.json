@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "lio-roulett": {
+    "lio-roulette": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/lio-roulett",
+            "outputPath": "dist/lio-roulette",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -61,18 +61,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "lio-roulett:build"
+            "browserTarget": "lio-roulette:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "lio-roulett:build:production"
+              "browserTarget": "lio-roulette:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "lio-roulett:build"
+            "browserTarget": "lio-roulette:build"
           }
         },
         "test": {
@@ -106,7 +106,7 @@
         }
       }
     },
-    "lio-roulett-e2e": {
+    "lio-roulette-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -115,11 +115,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "lio-roulett:serve"
+            "devServerTarget": "lio-roulette:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "lio-roulett:serve:production"
+              "devServerTarget": "lio-roulette:serve:production"
             }
           }
         },
@@ -135,5 +135,5 @@
       }
     }
   },
-  "defaultProject": "lio-roulett"
+  "defaultProject": "lio-roulette"
 }

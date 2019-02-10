@@ -4,11 +4,11 @@ import rollRanges from './roll-ranges';
 import {map, take} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-roulett-roller',
-  templateUrl: './roulett-roller.component.html',
-  styleUrls: ['./roulett-roller.component.scss']
+  selector: 'app-roulette-roller',
+  templateUrl: './roulette-roller.component.html',
+  styleUrls: ['./roulette-roller.component.scss']
 })
-export class RoulettRollerComponent implements AfterViewInit, OnDestroy {
+export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
 
   private previousRollerSize: number;
   private resizeRollerSubscription: Subscription;

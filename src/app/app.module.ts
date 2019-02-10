@@ -10,6 +10,7 @@ import {config as firebaseConfig} from '../environments/firebase';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
       AngularFireModule.initializeApp(firebaseConfig),
       AngularFirestoreModule,
       AngularFireAuthModule,
+      AngularFireDatabaseModule
   ],
   providers: [],
   bootstrap: [AppComponent]

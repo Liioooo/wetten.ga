@@ -6,7 +6,7 @@ import {AuthGuard} from './shared/guards/auth/auth.guard';
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', children: HOME_ROUTES},
-    { path: 'roulett', loadChildren: './modules/roulett/roulett.module#RoulettModule'},
+    { path: 'roulette', loadChildren: './modules/roulette/roulette.module#RouletteModule'},
     { path: 'user-dashboard', loadChildren: './modules/user-dashboard/user-dashboard.module#UserDashboardModule', canActivate: [AuthGuard]}
 ];
 
