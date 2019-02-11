@@ -1,3 +1,20 @@
-<div *ngFor="let roll of rouletteService.rollHistory$ | async">
-  {{roll | json}}
+<div class="d-flex justify-content-around w-100 text-white history-container">
+  <div *ngFor="let roll of rouletteService.rollHistory$ | async">
+    <div *ngIf="roll.rolledNumber === 0">
+      <div class="bg-success history-item">
+        {{roll.rolledNumber}}
+      </div>
+    </div>
+    <div *ngIf="roll.rolledNumber <= 7 && roll.rolledNumber > 0">
+      <div class="bg-danger history-item">
+        {{roll.rolledNumber}}
+      </div>
+    </div>
+    <div *ngIf="roll.rolledNumber >= 8">
+      <div class="bg-dark-fix history-item">
+        {{roll.rolledNumber}}
+      </div>
+    </div>
+  </div>
 </div>
+
