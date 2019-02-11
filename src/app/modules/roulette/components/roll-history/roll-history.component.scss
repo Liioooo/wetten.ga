@@ -1,6 +1,19 @@
+@import "../../../../mixins";
+
 .history-container {
   height: 80px;
   align-items: center;
+  width: 100%;
+
+  @include mediaQuery(900px, min) {
+      width: 75%;
+  }
+  @include mediaQuery(1400px, min) {
+    width: 60%;
+  }
+  @include mediaQuery(2000px, min) {
+    width: 50%;
+  }
 
   .bg-dark-fix {
     background-color: #343a40
@@ -12,5 +25,11 @@
     border-radius: 50%;
     text-align: center;
     line-height: 45px;
+
+    @include mediaQuery(540px, max) {
+      width: 9vw;
+      height: 9vw;
+      line-height: 9vw;
+    }
   }
 }

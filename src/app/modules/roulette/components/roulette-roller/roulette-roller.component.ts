@@ -2,6 +2,9 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angul
 import {fromEvent, Subscription, timer} from 'rxjs';
 import rollRanges from './roll-ranges';
 import {map, take} from 'rxjs/operators';
+import {RouletteService} from '../../../../shared/services/roullete/roullete.service';
+import {Roll} from '../../../../shared/models/Roll';
+import {AnimationFinishedService} from '../../services/animation-finished.service';
 
 @Component({
   selector: 'app-roulette-roller',
@@ -15,7 +18,7 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('roller') roller: ElementRef<HTMLDivElement>;
 
-  constructor() { }
+  constructor(private rouletteService: RouletteService, private animationFinishedSer: AnimationFinishedService) { }
 
   ngAfterViewInit() {
       this.roller.nativeElement.style.backgroundPositionX = '0px';
@@ -23,25 +26,29 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
       this.resizeRollerSubscription = fromEvent(window, 'resize').subscribe(() => {
           this.roller.nativeElement.style.backgroundPositionX = parseFloat(this.roller.nativeElement.style.backgroundPositionX) - ((this.previousRollerSize - this.roller.nativeElement.offsetWidth) / 2) + 'px';
           this.previousRollerSize = this.roller.nativeElement.offsetWidth;
-    });
+      });
+      this.rouletteService.latestRoll$.subscribe((roll: Roll) => {
+          this.rollTo(roll.rolledNumber);
+      });
   }
 
   public rollTo(toRoll: number) {
       const startPos = parseFloat(this.roller.nativeElement.style.backgroundPositionX) % 2250;
       this.roller.nativeElement.style.backgroundPositionX = startPos + 'px';
       const targetPosition = this.getPositionToRoll(toRoll) + 2250 * 2;
-      console.log(targetPosition, 'target');
       const distance = targetPosition - startPos;
-      const speed = (distance + 0.07 * 250 * 250) / 250;
+      const speed = (distance + 0.035 * 350 * 350) / 350;
       timer(10, 10).pipe(
-          take(250),
+          take(350),
           map(count => count + 1)
-      ).subscribe(count => {
-          const newPos = startPos - 0.07 * count * count + speed * count;
-          console.log(Math.abs(newPos - targetPosition));
-          if (Math.abs(newPos - targetPosition) > 6) {
-              this.roller.nativeElement.style.backgroundPositionX = newPos + 'px';
-          }
+      ).subscribe({
+          next: count => {
+              const newPos = startPos - 0.035 * count * count + speed * count;
+              if (Math.abs(newPos - targetPosition) > 6) {
+                  this.roller.nativeElement.style.backgroundPositionX = newPos + 'px';
+              }
+          },
+          complete: () => this.animationFinishedSer.emitFinished()
       });
   }
 

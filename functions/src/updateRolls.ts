@@ -14,9 +14,7 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
     };
 
     const snapshot = await ref.limitToLast(9).once('value');
-    await ref.transaction(() => {
-        ref.set(snapshot.val());
-        ref.push(newRoll);
-    });
+    await ref.set(snapshot.val());
+    await ref.push(newRoll);
     resp.send('updated rolls');
 });

@@ -7,13 +7,15 @@ import { RouletteRollerComponent } from './components/roulette-roller/roulette-r
 import {SharedModule} from '../../shared/shared.module';
 import { RollHistoryComponent } from './components/roll-history/roll-history.component';
 import { ChatComponent } from './components/chat/chat.component';
+import {AnimationFinishedService} from './services/animation-finished.service';
 
 @NgModule({
   declarations: [RouletteComponent, RouletteRollerComponent, RollHistoryComponent, ChatComponent],
-  imports: [
-      CommonModule,
-      RouletteRoutingModule,
-      SharedModule
-  ]
+    imports: [
+        CommonModule,
+        RouletteRoutingModule,
+        SharedModule
+    ],
+    providers: [AnimationFinishedService]
 })
 export class RouletteModule { }
