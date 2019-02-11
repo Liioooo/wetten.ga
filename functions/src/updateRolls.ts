@@ -12,9 +12,11 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
       rolledNumber: Math.floor(Math.random() * 15),
       timestamp: new Date(Date.now()).toISOString()
     };
-    await ref.push(newRoll);
 
-    const snapshot = await ref.limitToLast(10).once('value');
-    ref.set(snapshot.val());
+    const snapshot = await ref.limitToLast(9).once('value');
+    await ref.transaction(() => {
+        ref.set(snapshot.val());
+        ref.push(newRoll);
+    });
     resp.send('updated rolls');
 });
