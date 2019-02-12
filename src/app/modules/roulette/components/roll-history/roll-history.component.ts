@@ -1,23 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RouletteService} from '../../../../shared/services/roullete/roullete.service';
 import {Roll} from '../../../../shared/models/Roll';
 import {AnimationFinishedService} from '../../services/animation-finished.service';
-import {Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
+import {debounce} from 'rxjs/operators';
 
 @Component({
   selector: 'app-roll-history',
   templateUrl: './roll-history.component.html',
   styleUrls: ['./roll-history.component.scss']
 })
-export class RollHistoryComponent implements OnInit, OnDestroy {
+export class RollHistoryComponent implements OnInit {
 
-  public rollHistory: Roll[];
-  private rollHistoryDelayed: Roll[];
-
-  private rollHistorySubscription: Subscription;
-  private animationFinishedSubscription: Subscription;
+  public rollHistory$: Observable<Roll[]>;
 
   constructor(public rouletteService: RouletteService, private animationFinishedService: AnimationFinishedService) { }
+
+  ngOnInit() {
+    this.rollHistory$ = this.rouletteService.rollHistory$.pipe(
+        debounce(() => this.animationFinishedService.animationFinished)
+    );
+  }
 
   private getClass(num: number): string {
     if (num === 0) {
@@ -30,17 +33,5 @@ export class RollHistoryComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  
-  ngOnInit() {
-    this.rollHistorySubscription = this.rouletteService.rollHistory$.subscribe(history => this.rollHistoryDelayed = history);
-    this.animationFinishedSubscription = this.animationFinishedService.animationFinished.subscribe(() => {
-      this.rollHistory = this.rollHistoryDelayed;
-    });
-  }
-  
-  ngOnDestroy() {
-    this.rollHistorySubscription.unsubscribe();
-    this.animationFinishedSubscription.unsubscribe();
-  }
-
 }
+
