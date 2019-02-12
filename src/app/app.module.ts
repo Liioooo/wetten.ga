@@ -11,6 +11,7 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
       AngularFireModule.initializeApp(firebaseConfig),
       AngularFirestoreModule,
       AngularFireAuthModule,
-      AngularFireDatabaseModule
+      AngularFireDatabaseModule,
+      BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

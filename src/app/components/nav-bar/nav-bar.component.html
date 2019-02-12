@@ -22,9 +22,9 @@
         </ng-template>
 
         <ng-template #loggedIn>
-          <div *ngIf="authService.user$ | async as user" class="d-flex" [class.active]="location.path(false) === '/user-dashboard'">
-            <a class="nav-link" routerLink="/user-dashboard">{{user.displayName}}</a>
-            <img class="userImg rounded-circle" [src]="user.photoURL">
+          <div *ngIf="authService.user$ | async as user" class="user-bar d-flex" [class.active]="isRouterOnCurrentPage()" routerLink="/user-dashboard">
+            <a class="nav-link">{{user.displayName}}</a>
+            <img class="userImg rounded-circle" [class.img-circled]="isRouterOnCurrentPage()" [src]="user.photoURL">
           </div>
         </ng-template>
       </li>

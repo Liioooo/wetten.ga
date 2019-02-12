@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../shared/services/auth/auth.service';
 import {Location} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,7 +10,11 @@ import {Location} from '@angular/common';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(public authService: AuthService, public location: Location) { }
+  constructor(
+    public authService: AuthService,
+    public location: Location,
+    public router: Router
+    ) { }
 
   ngOnInit() {
   }
@@ -18,4 +23,7 @@ export class NavBarComponent implements OnInit {
       this.authService.signIn();
   }
 
+  public isRouterOnCurrentPage() {
+    return this.router.url === '/user-dashboard';
+  }
 }

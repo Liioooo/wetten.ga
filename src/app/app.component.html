@@ -1,2 +1,4 @@
 <app-nav-bar></app-nav-bar>
-<router-outlet></router-outlet>
+<div class="router-div" [@routerTransition]="getState(out)">
+  <router-outlet #out="outlet"></router-outlet>
+</div>
