@@ -12,8 +12,7 @@ export class NavBarComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    public location: Location,
-    public router: Router
+    public location: Location
     ) { }
 
   ngOnInit() {
@@ -21,9 +20,5 @@ export class NavBarComponent implements OnInit {
 
   public loginClicked() {
       this.authService.signIn();
-  }
-
-  public isRouterOnCurrentPage() {
-    return this.router.url === '/user-dashboard';
   }
 }

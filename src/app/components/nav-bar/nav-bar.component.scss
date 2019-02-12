@@ -10,8 +10,10 @@
   height: 38px;
 }
 
-.img-circled {
-  border: 2px solid #18BC9C;
+.active {
+  img {
+    border: 2px solid #18BC9C;
+  }
 }
 
 .user-bar {
