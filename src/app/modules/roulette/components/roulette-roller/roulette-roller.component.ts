@@ -16,9 +16,11 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
   private previousRollerSize: number;
   private resizeRollerSubscription: Subscription;
 
+  private latestRollSubscription: Subscription;
+
   @ViewChild('roller') roller: ElementRef<HTMLDivElement>;
 
-  constructor(private rouletteService: RouletteService, private animationFinishedSer: AnimationFinishedService) { }
+  constructor(private rouletteService: RouletteService, private animationFinishedService: AnimationFinishedService) { }
 
   ngAfterViewInit() {
       this.roller.nativeElement.style.backgroundPositionX = '0px';
@@ -27,8 +29,16 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
           this.roller.nativeElement.style.backgroundPositionX = parseFloat(this.roller.nativeElement.style.backgroundPositionX) - ((this.previousRollerSize - this.roller.nativeElement.offsetWidth) / 2) + 'px';
           this.previousRollerSize = this.roller.nativeElement.offsetWidth;
       });
-      this.rouletteService.latestRoll$.subscribe((roll: Roll) => {
-          this.rollTo(roll.rolledNumber);
+
+      let firstTimeRollSet = true;
+      this.latestRollSubscription = this.rouletteService.latestRoll$.subscribe((roll: Roll) => {
+          if (firstTimeRollSet) {
+              this.setRolled(roll.rolledNumber);
+              this.animationFinishedService.emitFinished();
+              firstTimeRollSet = false;
+          } else {
+              this.rollTo(roll.rolledNumber);
+          }
       });
   }
 
@@ -48,7 +58,7 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
                   this.roller.nativeElement.style.backgroundPositionX = newPos + 'px';
               }
           },
-          complete: () => this.animationFinishedSer.emitFinished()
+          complete: () => this.animationFinishedService.emitFinished()
       });
   }
 
@@ -67,6 +77,9 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     if (this.resizeRollerSubscription) {
       this.resizeRollerSubscription.unsubscribe();
+    }
+    if (this.latestRollSubscription) {
+        this.latestRollSubscription.unsubscribe();
     }
   }
 
