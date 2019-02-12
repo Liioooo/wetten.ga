@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-around text-white history-container m-auto">
-  <div *ngFor="let roll of rollHistory">
+  <div *ngFor="let roll of rollHistory$ | async">
     <div *ngIf="roll.rolledNumber === 0">
       <div class="bg-success history-item">
         {{roll.rolledNumber}}
