@@ -14,7 +14,13 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
     };
 
     const snapshot = await ref.limitToLast(9).once('value');
-    await ref.set(snapshot.val());
-    await ref.push(newRoll);
+
+    const newRollId = await ref.push().key || '';
+
+    const rolls: object = snapshot.val();
+    rolls[newRollId] = newRoll;
+
+    await ref.set(rolls);
+
     resp.send('updated rolls');
 });

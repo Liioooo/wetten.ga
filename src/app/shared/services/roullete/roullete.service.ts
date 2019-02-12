@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Observable} from 'rxjs';
 import {Roll} from '../../models/Roll';
-import {debounceTime, delay, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,6 @@ export class RouletteService {
 
     public get latestRoll$(): Observable<Roll> {
         return this._rollHistory$.pipe(
-            debounceTime(100),
             map(history => history[history.length - 1])
         );
     }
