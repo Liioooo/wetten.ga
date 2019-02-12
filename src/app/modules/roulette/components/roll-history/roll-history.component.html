@@ -1,17 +1,7 @@
 <div class="d-flex justify-content-around text-white history-container m-auto">
-  <div *ngFor="let roll of rollHistory$ | async">
-    <div *ngIf="roll.rolledNumber === 0">
-      <div class="bg-success history-item">
-        {{roll.rolledNumber}}
-      </div>
-    </div>
-    <div *ngIf="roll.rolledNumber <= 7 && roll.rolledNumber > 0">
-      <div class="bg-danger history-item">
-        {{roll.rolledNumber}}
-      </div>
-    </div>
-    <div *ngIf="roll.rolledNumber >= 8">
-      <div class="bg-dark-fix history-item">
+  <div *ngFor="let roll of rollHistory">
+    <div>
+      <div [ngClass]="getClass(roll.rolledNumber)" class="history-item">
         {{roll.rolledNumber}}
       </div>
     </div>

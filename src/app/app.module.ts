@@ -24,7 +24,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
       SharedModule.forRoot(),
       AppRoutingModule,
       AngularFireModule.initializeApp(firebaseConfig),
-      AngularFirestoreModule,
+      AngularFirestoreModule.enablePersistence(),
       AngularFireAuthModule,
       AngularFireDatabaseModule,
       BrowserAnimationsModule
