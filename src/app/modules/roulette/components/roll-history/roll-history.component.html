@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-around text-white history-container m-auto">
-  <div *ngFor="let roll of rollHistory$ | async">
-    <div>
-      <div [ngClass]="getClass(roll.rolledNumber)" class="history-item">
+  <div *ngFor="let roll of rollHistory$ | async; trackBy: trackByCreated">
+      <div>
+      <div [ngClass]="getClass(roll.rolledNumber)" class="history-item animated fadeIn">
         {{roll.rolledNumber}}
       </div>
     </div>

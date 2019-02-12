@@ -3,7 +3,7 @@ import {RouletteService} from '../../../../shared/services/roullete/roullete.ser
 import {Roll} from '../../../../shared/models/Roll';
 import {AnimationFinishedService} from '../../services/animation-finished.service';
 import {Observable} from 'rxjs';
-import {debounce} from 'rxjs/operators';
+import {debounce, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-roll-history',
@@ -18,7 +18,8 @@ export class RollHistoryComponent implements OnInit {
 
   ngOnInit() {
     this.rollHistory$ = this.rouletteService.rollHistory$.pipe(
-        debounce(() => this.animationFinishedService.animationFinished)
+          debounce(() => this.animationFinishedService.animationFinished),
+          tap(console.log)
     );
   }
 
@@ -31,6 +32,10 @@ export class RollHistoryComponent implements OnInit {
       return 'bg-dark-fix';
     }
     return '';
+  }
+
+  public trackByCreated(index, item): void {
+    return item.id;
   }
 
 }
