@@ -26,7 +26,7 @@ export class AuthService {
       );
   }
 
-  public get user$() {
+  public get user$(): Observable<User> {
       return this._user$;
   }
 

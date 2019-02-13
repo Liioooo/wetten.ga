@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {AuthService} from './services/auth/auth.service';
 import {AuthGuard} from './guards/auth/auth.guard';
 import {RouletteService} from './services/roullete/roullete.service';
-import {NotificationService} from './services/notification/notification.service';
 import {ToastrModule} from 'ngx-toastr';
 
 
@@ -19,7 +18,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [AuthService, AuthGuard, RouletteService, NotificationService]
+      providers: [AuthService, AuthGuard, RouletteService]
     };
   }
 }
