@@ -11,8 +11,7 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow write: if isOwner(userId) && hasEmailVerified();
-      allow read: if isOwner(userId);
+      allow read, write: if isOwner(userId)
     }
 
     function isOwner(userId) {

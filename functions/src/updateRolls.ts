@@ -2,7 +2,6 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import {Roll} from './models/Roll';
 
-admin.initializeApp();
 const afs = admin.firestore();
 
 export const updateRolls = functions.https.onRequest(async (req, resp) => {
