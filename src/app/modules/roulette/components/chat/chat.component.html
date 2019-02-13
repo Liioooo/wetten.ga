@@ -1,7 +1,7 @@
 <div class="border rounded p-1">
     <h4 class="text-center">Chat</h4>
-    <div class="chat-container">
-        <div *ngFor="let message of messages$ | async">
+    <div class="chat-container" #scrollElement>
+        <div *ngFor="let message of messages">
             <div class="message d-flex">
                 <div class="align-self-end bg-secondary rounded-left user-img-container">
                     <img class="userImg rounded-circle" src="https://lh4.googleusercontent.com/-M50o23llwxY/AAAAAAAAAAI/AAAAAAAAAAA/ACevoQM6U2Uo060MVnnNRJksZR0tyV_LhA/mo/photo.jpg">
@@ -15,9 +15,9 @@
         </div>
     </div>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Your Message" [(ngModel)]="currentlyTyped" [disabled]="!(authService.user$ | async)">
+        <input type="text" class="form-control" (keydown)="checkEnter($event)" placeholder="Your Message" [(ngModel)]="currentlyTyped" [disabled]="!(authService.user$ | async)">
         <div class="input-group-append">
-            <button class="btn btn-primary" [disabled]="!(authService.user$ | async) || currentlyTyped.length === 0" (click)="sendMessage()">Send</button>
+            <button class="btn btn-primary" (keydown)="checkEnter($event)" [disabled]="!(authService.user$ | async) || currentlyTyped.length === 0" (click)="sendMessage()">Send</button>
         </div>
     </div>
 </div>

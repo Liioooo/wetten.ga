@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {ChatService} from '../../services/chat.service';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Message} from '../../models/Message';
 
 @Component({
@@ -10,20 +10,25 @@ import {Message} from '../../models/Message';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
     @ViewChild(CdkVirtualScrollViewport)
     scrollViewport: CdkVirtualScrollViewport;
 
-    public messages$: Observable<Message[]>;
+    @ViewChild('scrollElement') scrollElement;
 
+    public messages;
     public currentlyTyped = '';
+    private messageSubscription: Subscription;
 
     constructor(public authService: AuthService, public chatService: ChatService) {
     }
 
     ngOnInit() {
-      this.messages$ = this.chatService.getMessages();
+      this.messageSubscription = this.chatService.getMessages().subscribe(x => {
+        this.messages = x;
+        this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight); // Needs to be animated + Delayed
+      });
     }
 
     sendMessage() {
@@ -31,8 +36,13 @@ export class ChatComponent implements OnInit {
       this.currentlyTyped = '';
     }
 
-    scrolled() {
-
+    checkEnter({keyCode}: KeyboardEvent) {
+      if (keyCode === 13) {
+        this.sendMessage();
+      }
     }
 
+    ngOnDestroy() {
+      this.messageSubscription.unsubscribe();
+    }
 }
