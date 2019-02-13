@@ -14,11 +14,11 @@ export class AuthService {
 
   private readonly _user$: Observable<User>;
 
-  constructor(private fireAuth: AngularFireAuth, private fireStore: AngularFirestore, private router: Router) {
+  constructor(private fireAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) {
       this._user$ = this.fireAuth.authState.pipe(
           switchMap(user => {
               if (user) {
-                  return this.fireStore.doc<User>(`users/${user.uid}`).valueChanges();
+                  return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
               } else {
                   return of(null);
               }
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   private updateUserData({uid, displayName, photoURL}: User) {
-      const userRef: AngularFirestoreDocument<User> = this.fireStore.doc(`users/${uid}`);
+      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${uid}`);
       const data = {
           uid,
           displayName,

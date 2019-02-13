@@ -3,24 +3,28 @@ import * as admin from 'firebase-admin';
 import {Roll} from './models/Roll';
 
 admin.initializeApp();
-const database = admin.database();
+const afs = admin.firestore();
 
 export const updateRolls = functions.https.onRequest(async (req, resp) => {
-    const ref = database.ref('rolls');
+    const ref = afs.collection('rolls');
 
     const newRoll: Roll = {
       rolledNumber: Math.floor(Math.random() * 15),
-      timestamp: new Date(Date.now()).toISOString()
+      timestamp: admin.firestore.Timestamp.now()
     };
 
-    const snapshot = await ref.limitToLast(9).once('value');
 
-    const newRollId = await ref.push().key || '';
+    const snapshot = await ref
+      .orderBy('timestamp')
+      .limit(1)
+      .get();
 
-    const rolls: object = snapshot.val();
-    rolls[newRollId] = newRoll;
+    if (!snapshot.empty) {
+      const querySnap = snapshot.docs[0];
+      await querySnap.ref.delete();
+    }
 
-    await ref.set(rolls);
+    await ref.add(newRoll);
 
-    resp.send('updated rolls');
+  resp.send('updated rolls');
 });
