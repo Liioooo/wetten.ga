@@ -1,1 +1,12 @@
-<div class="bg-dark">chat</div>
+<div class="border rounded p-1">
+    <h4 class="text-center">Chat</h4>
+    <cdk-virtual-scroll-viewport itemSize="300">
+
+    </cdk-virtual-scroll-viewport>
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Your Message" [(ngModel)]="currentlyTyped" [disabled]="!(authService.user$ | async)">
+        <div class="input-group-append">
+            <button class="btn btn-primary" [disabled]="!(authService.user$ | async) || currentlyTyped.length === 0">Send</button>
+        </div>
+    </div>
+</div>

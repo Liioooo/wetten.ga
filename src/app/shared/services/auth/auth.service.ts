@@ -4,7 +4,7 @@ import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestor
 import {Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {User} from '../../models/User';
-import {map, switchMap, take} from 'rxjs/operators';
+import {distinctUntilChanged, map, switchMap, take, tap} from 'rxjs/operators';
 import { auth } from 'firebase/app';
 
 @Injectable({
