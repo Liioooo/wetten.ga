@@ -14,17 +14,14 @@ export class RouletteService {
     private readonly _rollHistory$: Observable<Roll[]>;
 
     constructor(private afs: AngularFirestore) {
-      this._rollHistory$ = this.afs.collection<Roll>('rolls')
+      this._rollHistory$ = this.afs.collection<Roll>('rolls', ref => ref.orderBy('timestamp'))
       .snapshotChanges()
         .pipe(
-          map(actions => {
-            return actions.map(action => {
+          map(actions => actions.map(action => {
               const data = action.payload.doc.data();
-              console.log(data);
               const id = action.payload.doc.id;
               return {id, ...data} as Roll;
-            });
-          }),
+            })),
           distinctUntilChanged((p: Roll[], q: Roll[]) => p[p.length - 1].timestamp.isEqual(q[q.length - 1].timestamp))
         ) as Observable<Roll[]>;
     }

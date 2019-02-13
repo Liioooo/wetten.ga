@@ -17,10 +17,10 @@ export class RollHistoryComponent implements OnInit {
   constructor(public rouletteService: RouletteService, private animationFinishedService: AnimationFinishedService) { }
 
   ngOnInit() {
-    this.rollHistory$ = this.rouletteService.rollHistory$.pipe(
-          debounce(() => this.animationFinishedService.animationFinished),
-          tap(console.log)
-    );
+    this.rollHistory$ = this.rouletteService.rollHistory$
+      .pipe(
+          debounce(() => this.animationFinishedService.animationFinished)
+      );
   }
 
   private getClass(num: number): string {
