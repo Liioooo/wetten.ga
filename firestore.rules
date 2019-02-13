@@ -5,6 +5,11 @@ service cloud.firestore {
     	allow read;
     }
 
+    match /chat/{document=**} {
+      allow read;
+      allow create: if isSignedIn();
+    }
+
     match /users/{userId} {
       allow write: if isOwner(userId) && hasEmailVerified();
       allow read: if isOwner(userId);
@@ -16,6 +21,10 @@ service cloud.firestore {
 
     function hasEmailVerified() {
     	return request.auth.token.email_verified;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
     }
   }
 }
