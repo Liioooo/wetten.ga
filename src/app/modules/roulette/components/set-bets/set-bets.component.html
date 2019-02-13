@@ -1,0 +1,21 @@
+<div class="border rounded p-1">
+  <div [ngSwitch]="type">
+    <button *ngSwitchCase="'1-7'" type="button" class="btn btn-danger btn-lg btn-block">1 - 7</button>
+    <button *ngSwitchCase="'0'" type="button" class="btn btn-success btn-lg btn-block">0</button>
+    <button *ngSwitchCase="'8-14'" type="button" class="btn btn-primary btn-lg btn-block">8 - 14</button>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">User</th>
+        <th scope="col">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>*User*</td>
+      <td>*20*</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
