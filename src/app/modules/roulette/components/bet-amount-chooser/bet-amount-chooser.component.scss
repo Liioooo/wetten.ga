@@ -1,0 +1,20 @@
+@import "../../../../mixins";
+
+.bet-amount-chooser-container {
+
+  @include mediaQuery(640px, max) {
+      flex-direction: column;
+
+  }
+
+  .bet-amount-input {
+    max-width: 140px;
+    margin-left: 0.5rem;
+
+    @include mediaQuery(640px, max) {
+      margin-top: 0.5rem;
+      margin-left: 0;
+
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<div class="pt-3">Balance: {{balance}}</div>
+<div class="pt-2 d-flex bet-amount-chooser-container">
+  <div class="btn-group flex-wrap" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary" (click)="clearAmount()">Clear</button>
+    <button type="button" class="btn btn-secondary" [disabled]="!hasEnough(1)" (click)="addAmount(1)">+1</button>
+    <button type="button" class="btn btn-secondary" [disabled]="!hasEnough(5)" (click)="addAmount(5)">+5</button>
+    <button type="button" class="btn btn-secondary" [disabled]="!hasEnough(10)" (click)="addAmount(10)">+10</button>
+    <button type="button" class="btn btn-secondary" [disabled]="!hasEnough(100)" (click)="addAmount(100)">+100</button>
+    <button type="button" class="btn btn-secondary" [disabled]="!hasEnough(1000)" (click)="addAmount(1000)">+1000</button>
+    <button type="button" class="btn btn-secondary" (click)="multiply(0.5)">1/2</button>
+    <button type="button" class="btn btn-secondary" [disabled]="!hasEnoughMultiply(2)" (click)="multiply(2)">x2</button>
+    <button type="button" class="btn btn-secondary" (click)="maxAmount()">Max</button>
+  </div>
+  <input type="number" class="form-control bet-amount-input" placeholder="Bet amount" [(ngModel)]="betAmount" (change)="typedInAmountField()">
+</div>

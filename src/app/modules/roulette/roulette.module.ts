@@ -8,13 +8,24 @@ import {SharedModule} from '../../shared/shared.module';
 import { RollHistoryComponent } from './components/roll-history/roll-history.component';
 import { ChatComponent } from './components/chat/chat.component';
 import {AnimationFinishedService} from './services/animation-finished.service';
+import {BetAmountChooserComponent} from './components/bet-amount-chooser/bet-amount-chooser.component';
+import {FormsModule} from '@angular/forms';
+import {SetBetsComponent} from './components/set-bets/set-bets.component';
 
 @NgModule({
-  declarations: [RouletteComponent, RouletteRollerComponent, RollHistoryComponent, ChatComponent],
+  declarations: [
+      RouletteComponent,
+      RouletteRollerComponent,
+      RollHistoryComponent,
+      ChatComponent,
+      BetAmountChooserComponent,
+      SetBetsComponent
+  ],
     imports: [
         CommonModule,
         RouletteRoutingModule,
-        SharedModule
+        SharedModule,
+        FormsModule
     ],
     providers: [AnimationFinishedService]
 })
