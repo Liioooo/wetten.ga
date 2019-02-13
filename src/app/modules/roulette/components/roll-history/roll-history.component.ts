@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RouletteService} from '../../../../shared/services/roullete/roullete.service';
 import {Roll} from '../../../../shared/models/Roll';
-import {AnimationFinishedService} from '../../services/animation-finished.service';
 import {Observable} from 'rxjs';
-import {debounce, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-roll-history',
@@ -14,13 +12,10 @@ export class RollHistoryComponent implements OnInit {
 
   public rollHistory$: Observable<Roll[]>;
 
-  constructor(public rouletteService: RouletteService, private animationFinishedService: AnimationFinishedService) { }
+  constructor(public rouletteService: RouletteService) { }
 
   ngOnInit() {
-    this.rollHistory$ = this.rouletteService.rollHistory$.pipe(
-          debounce(() => this.animationFinishedService.animationFinished),
-          tap(console.log)
-    );
+    this.rollHistory$ = this.rouletteService.rollHistoryWithAnimationDelay$;
   }
 
   private getClass(num: number): string {

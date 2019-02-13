@@ -4,7 +4,6 @@ import rollRanges from './roll-ranges';
 import {map, take} from 'rxjs/operators';
 import {RouletteService} from '../../../../shared/services/roullete/roullete.service';
 import {Roll} from '../../../../shared/models/Roll';
-import {AnimationFinishedService} from '../../services/animation-finished.service';
 
 @Component({
   selector: 'app-roulette-roller',
@@ -20,7 +19,7 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('roller') roller: ElementRef<HTMLDivElement>;
 
-  constructor(private rouletteService: RouletteService, private animationFinishedService: AnimationFinishedService) { }
+  constructor(private rouletteService: RouletteService) { }
 
   ngAfterViewInit() {
       this.roller.nativeElement.style.backgroundPositionX = '0px';
@@ -34,7 +33,7 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
       this.latestRollSubscription = this.rouletteService.latestRoll$.subscribe((roll: Roll) => {
           if (firstTimeRollSet) {
               this.setRolled(roll.rolledNumber);
-              this.animationFinishedService.emitFinished();
+              this.rouletteService.finishedAnimation();
               firstTimeRollSet = false;
           } else {
               this.rollTo(roll.rolledNumber);
@@ -58,7 +57,7 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
                   this.roller.nativeElement.style.backgroundPositionX = newPos + 'px';
               }
           },
-          complete: () => this.animationFinishedService.emitFinished()
+          complete: () => this.rouletteService.finishedAnimation()
       });
   }
 
