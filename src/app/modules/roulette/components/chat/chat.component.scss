@@ -1,5 +1,44 @@
+@import "../../../../mixins";
+
 div {
-  cdk-virtual-scroll-viewport {
+  .chat-container {
     height: 300px;
+    width: 100%;
+    overflow: auto;
+
+    .message {
+      min-height: 30px;
+      max-width: 100%;
+      overflow: hidden;
+
+      .user-img-container {
+        width: 29px;
+        height: 29px;
+        display: flex;
+        justify-content: center;
+
+        img {
+          width: 85%;
+          height: 85%;
+          align-self: center;
+        }
+      }
+
+      .message-text-container {
+        min-width: 30%;
+        max-width: calc(100% - 45px);
+        overflow: hidden;
+        position: relative;
+
+        p {
+          width: 80px;
+          position: absolute;
+          right: 5px;
+          bottom: 0px;
+          text-align: right;
+        }
+      }
+    }
   }
+
 }

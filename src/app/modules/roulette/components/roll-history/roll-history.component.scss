@@ -5,7 +5,7 @@
   align-items: center;
   width: 100%;
 
-  @include mediaQuery(900px, min) {
+  @include mediaQuery(1050px, min) {
       width: 75%;
   }
   @include mediaQuery(1400px, min) {

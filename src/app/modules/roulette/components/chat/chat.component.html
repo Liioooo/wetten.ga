@@ -1,10 +1,19 @@
 <div class="border rounded p-1">
     <h4 class="text-center">Chat</h4>
-        <cdk-virtual-scroll-viewport itemSize="20" (scrolledIndexChange)="scrolled()">
-            <div *cdkVirtualFor="let message of messages$;">
-                <div style="height: 20px">{{message.message}}</div>
+    <div class="chat-container">
+        <div *ngFor="let message of messages$ | async">
+            <div class="message d-flex">
+                <div class="align-self-end bg-secondary rounded-left user-img-container">
+                    <img class="userImg rounded-circle" src="https://lh4.googleusercontent.com/-M50o23llwxY/AAAAAAAAAAI/AAAAAAAAAAA/ACevoQM6U2Uo060MVnnNRJksZR0tyV_LhA/mo/photo.jpg">
+                </div>
+                <div class="mb-0 bg-secondary rounded-top rounded-right p-2 pb-3 message-text-container">
+                    <span>{{message.message}}</span>
+                    <p class="mb-0 small">10:30</p>
+                </div>
             </div>
-        </cdk-virtual-scroll-viewport>
+            <p class="mb-1 small">Liiiioooo</p>
+        </div>
+    </div>
     <div class="input-group">
         <input type="text" class="form-control" placeholder="Your Message" [(ngModel)]="currentlyTyped" [disabled]="!(authService.user$ | async)">
         <div class="input-group-append">

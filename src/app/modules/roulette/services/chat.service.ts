@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map, mergeMap, switchMap, take, tap} from 'rxjs/operators';
+import {map, mergeMap, take, tap} from 'rxjs/operators';
 import {Message} from '../models/Message';
 import {Observable} from 'rxjs';
 import {firestore} from 'firebase';
@@ -26,8 +26,7 @@ export class ChatService {
                       return message;
                   });
               })
-          )),
-        tap(console.log)
+          ))
     );
   }
 
