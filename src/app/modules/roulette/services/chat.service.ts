@@ -69,7 +69,10 @@ export class ChatService {
             mergeMap(messages => this.authService.user$.pipe(
                 map(user => {
                     return messages.map(message => {
-                        message.wasSentByLoggedInUser = message.user.id === user.uid;
+                        message.wasSentByLoggedInUser = false;
+                        if (user) {
+                            message.wasSentByLoggedInUser = message.user.id === user.uid;
+                        }
                         return message;
                     });
                 })
