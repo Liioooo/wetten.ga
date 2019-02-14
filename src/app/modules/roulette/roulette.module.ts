@@ -11,7 +11,6 @@ import {BetAmountChooserComponent} from './components/bet-amount-chooser/bet-amo
 import {FormsModule} from '@angular/forms';
 import {SetBetsComponent} from './components/set-bets/set-bets.component';
 import {ChatService} from './services/chat.service';
-import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -26,8 +25,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
         CommonModule,
         RouletteRoutingModule,
         SharedModule,
-        FormsModule,
-        ScrollingModule
+        FormsModule
     ],
     providers: [ChatService]
 })
