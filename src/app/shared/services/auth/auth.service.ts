@@ -13,6 +13,7 @@ import { auth } from 'firebase/app';
 export class AuthService {
 
   private readonly _user$: Observable<User>;
+  private _userRef: AngularFirestoreDocument<User>;
 
   constructor(private fireAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) {
       this._user$ = this.fireAuth.authState.pipe(
@@ -27,9 +28,12 @@ export class AuthService {
   }
 
   public get user$(): Observable<User> {
-      return this._user$;
+    return this._user$;
   }
 
+  public get userRef(): AngularFirestoreDocument<User> {
+    return this._userRef;
+  }
 
   public async signIn() {
       const provider = new auth.GoogleAuthProvider();
@@ -45,7 +49,7 @@ export class AuthService {
   private updateUserData(credentials) {
       const {uid, displayName, photoURL, email, phoneNumber} = credentials.user;
       const {family_name, given_name, gender} = credentials.additionalUserInfo.profile;
-      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${uid}`);
+      this._userRef = this.afs.doc(`users/${credentials.user}`);
 
       const data = {
           uid,
@@ -64,7 +68,7 @@ export class AuthService {
         }
       }
 
-      return userRef.set(data, {merge: true});
+      return this._userRef.set(data, {merge: true});
   }
 
 }
