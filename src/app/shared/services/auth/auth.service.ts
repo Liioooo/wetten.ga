@@ -34,7 +34,6 @@ export class AuthService {
   public async signIn() {
       const provider = new auth.GoogleAuthProvider();
       const credential = await this.fireAuth.auth.signInWithPopup(provider);
-      console.log(credential)
       return this.updateUserData(credential);
   }
 

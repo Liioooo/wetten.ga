@@ -5,6 +5,7 @@ div {
     height: 300px;
     width: 100%;
     overflow: auto;
+    @include scrollbar(12px);
 
     .message {
       min-height: 30px;
