@@ -4,6 +4,7 @@ import {ChatService} from '../../services/chat.service';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {Observable, Subscription} from 'rxjs';
 import {Message} from '../../models/Message';
+import {delay, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -17,7 +18,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     @ViewChild('scrollElement') scrollElement;
 
-    public messages;
+    public messages: Message[];
     public currentlyTyped = '';
     private messageSubscription: Subscription;
 
@@ -25,10 +26,19 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-      this.messageSubscription = this.chatService.getMessages().subscribe(x => {
-        this.messages = x;
-        this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight); // Needs to be animated + Delayed
+      this.chatService.getNextMessages();
+      this.messageSubscription = this.chatService.getMessages().pipe(
+          tap(messages => this.messages = messages),
+          delay(100)
+      ).subscribe(() => {
+          //this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight);
       });
+    }
+
+    scrolled() {
+        if (this.scrollElement.nativeElement.scrollTop === 0) {
+            this.chatService.getNextMessages(this.messages[0].timestamp);
+        }
     }
 
     sendMessage() {

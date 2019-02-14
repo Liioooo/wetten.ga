@@ -1,6 +1,6 @@
 <div class="border rounded p-1">
     <h4 class="text-center">Chat</h4>
-    <div class="chat-container" #scrollElement>
+    <div class="chat-container" #scrollElement (scroll)="scrolled()">
         <div *ngFor="let message of messages">
             <div class="message d-flex">
                 <div class="align-self-end bg-secondary rounded-left user-img-container">
