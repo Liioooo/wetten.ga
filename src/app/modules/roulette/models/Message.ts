@@ -8,4 +8,8 @@ export interface Message {
     timestamp: Timestamp;
     user: DocumentReference;
     wasSentByLoggedInUser?: boolean;
+    userDetails?: {
+        displayName: string;
+        photoURL: string;
+    };
 }

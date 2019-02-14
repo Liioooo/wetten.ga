@@ -7,10 +7,25 @@ div {
     overflow: auto;
     @include scrollbar(12px);
 
+    .sent-by-logged-in {
+      flex-direction: row-reverse;
+      margin-right: .3rem;
+    }
+
+    .sent-by-logged-in-name {
+      text-align: end;
+      right: 6px;
+      position: relative;
+    }
+
     .message {
       min-height: 30px;
       max-width: 100%;
       overflow: hidden;
+
+      .bg-secondary-lighten {
+        background-color: lighten(#6c757d, 35);
+      }
 
       .user-img-container {
         width: 29px;
@@ -31,11 +46,15 @@ div {
         overflow: hidden;
         position: relative;
 
+        .move-time-left {
+            left: 5px;
+        }
+
         p {
           width: 80px;
           position: absolute;
           right: 5px;
-          bottom: 0px;
+          bottom: 0;
           text-align: right;
         }
       }

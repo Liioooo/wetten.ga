@@ -2,16 +2,19 @@
     <h4 class="text-center">Chat</h4>
     <div class="chat-container" #scrollElement (scroll)="scrolled()">
         <div *ngFor="let message of messages">
-            <div class="message d-flex">
-                <div class="align-self-end bg-secondary rounded-left user-img-container">
-                    <img class="userImg rounded-circle" src="https://lh4.googleusercontent.com/-M50o23llwxY/AAAAAAAAAAI/AAAAAAAAAAA/ACevoQM6U2Uo060MVnnNRJksZR0tyV_LhA/mo/photo.jpg">
+            <div class="message d-flex" [ngClass]="{'sent-by-logged-in': message.wasSentByLoggedInUser}">
+                <div class="align-self-end bg-secondary-lighten user-img-container" [ngClass]="{'rounded-right': message.wasSentByLoggedInUser,
+                                                                                        'rounded-left': !message.wasSentByLoggedInUser}">
+                    <img class="userImg rounded-circle" [src]="message.userDetails.photoURL">
                 </div>
-                <div class="mb-0 bg-secondary rounded-top rounded-right p-2 pb-3 message-text-container">
+                <div class="mb-0 bg-secondary-lighten rounded-top p-2 pb-3 message-text-container" [ngClass]="{'rounded-left': message.wasSentByLoggedInUser,
+                                                                                                       'rounded-right': !message.wasSentByLoggedInUser,
+                                                                                                       'text-right': message.wasSentByLoggedInUser}">
                     <span>{{message.message}}</span>
-                    <p class="mb-0 small">10:30</p>
+                    <p class="mb-0 small" [ngClass]="{'text-left move-time-left': message.wasSentByLoggedInUser}">{{getTimeForTimestamp(message.timestamp)}}</p>
                 </div>
             </div>
-            <p class="mb-1 small">Liiiioooo</p>
+            <p class="mb-1 small" [ngClass]="{'sent-by-logged-in-name': message.wasSentByLoggedInUser}">{{message.userDetails.displayName}}</p>
         </div>
     </div>
     <div class="input-group">

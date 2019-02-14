@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, mergeMap, scan, switchMap, take, tap, throttleTime} from 'rxjs/operators';
 import {Message} from '../models/Message';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
 import {AuthService} from '../../../shared/services/auth/auth.service';
@@ -21,7 +21,6 @@ export class ChatService {
           throttleTime(500),
           mergeMap(n => this.getBatch(n)),
           scan((acc, batch) => {
-              // console.log(batch);
               return {...batch, ...acc};
           }, {}),
           map(messages => {
@@ -37,6 +36,9 @@ export class ChatService {
     }
 
     getBatch(offset): Observable<any> {
+        let nachrichten;
+        const joinKeys = {};
+
         return this.afs.collection<Message>('chat', ref => ref
             .orderBy('timestamp', 'desc')
             .startAfter(offset)
@@ -48,6 +50,21 @@ export class ChatService {
                     const id = action.payload.doc.id;
                     return {id, ...data} as Message;
                 }).reverse();
+            }),
+            switchMap(tempMessages => {
+                nachrichten = tempMessages;
+                const uids = Array.from(new Set(tempMessages.map(v => v.user.id)));
+                const userDocs = uids.map(id =>
+                    this.afs.doc(`users/${id}`).valueChanges()
+                );
+                return userDocs.length ? combineLatest(userDocs) : of([]);
+            }),
+            map(arr => {
+                arr.forEach(v => joinKeys[v.uid] = v);
+                nachrichten = nachrichten.map(v => {
+                    return { ...v, userDetails: joinKeys[v.user.id] };
+                });
+                return nachrichten;
             }),
             mergeMap(messages => this.authService.user$.pipe(
                 map(user => {
