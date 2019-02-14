@@ -24,7 +24,11 @@ export class ChatService {
               // console.log(batch);
               return {...batch, ...acc};
           }, {}),
-          map(v => Object.values(v)),
+          map(messages => {
+              const messageArray = [];
+              Object.keys(messages).forEach(message => messageArray.push(messages[message]));
+              return messageArray.sort((m1: Message, m2: Message) => m1.timestamp.seconds - m2.timestamp.seconds);
+          })
       );
     }
 

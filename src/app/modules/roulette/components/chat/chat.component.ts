@@ -22,6 +22,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     public currentlyTyped = '';
     private messageSubscription: Subscription;
 
+    private lastSent: string;
+
     constructor(public authService: AuthService, public chatService: ChatService) {
     }
 
@@ -30,8 +32,11 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.messageSubscription = this.chatService.getMessages().pipe(
           tap(messages => this.messages = messages),
           delay(100)
-      ).subscribe(() => {
-          //this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight);
+      ).subscribe(messages => {
+          if (this.lastSent === messages[messages.length - 1].message) {
+              this.lastSent = '';
+              this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight);
+          }
       });
     }
 
@@ -43,6 +48,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     sendMessage() {
       this.chatService.sendMessage(this.currentlyTyped);
+      this.lastSent = this.currentlyTyped;
       this.currentlyTyped = '';
     }
 
