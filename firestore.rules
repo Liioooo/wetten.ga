@@ -6,24 +6,54 @@ service cloud.firestore {
     }
 
     match /chat/{document=**} {
-      allow read;
+    	allow read;
       allow create: if isSignedIn();
     }
 
     match /users/{userId} {
-      allow read, write: if isOwner(userId)
+      allow update: if isOwner(userId) && 'amount' in incomingData();
+      allow create: if isOwner(userId) && 'amount' in incomingData() && !exists(/databases/$(database)/documents/users/$(currentUser().uid))
     }
 
+    match /users/{document=**} {
+    	allow read;
+    }
+
+    // true or false depending on matching of the passed userId with the current authenticated one
     function isOwner(userId) {
-        return request.auth.uid == userId
+        return request.auth.uid == userId;
     }
 
+    // true or false depending if email is verified (only works for custom login with email & pass)
     function hasEmailVerified() {
     	return request.auth.token.email_verified;
     }
 
+    // true or false depending on auth state
     function isSignedIn() {
       return request.auth != null;
     }
+
+    // Get current user document
+    function getUserData() {
+  		return get(/databases/$(database)/documents/accounts/$(request.auth.uid)).data;
+		}
+
+    // Get data being requested -> works for GET requests
+    function existingData() {
+      return resource.data;
+    }
+
+		// Get POST data coming from the request
+    function incomingData() {
+      return request.resource.data;
+    }
+
+		// Get current authenticated user
+    function currentUser() {
+      return request.auth;
+    }
+
+
   }
 }

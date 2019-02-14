@@ -1,11 +1,17 @@
 @import "../../../../mixins";
 
 div {
+  .input-group {
+    margin-top: 0.5rem;
+  }
+
   .chat-container {
     height: 300px;
     width: 100%;
     overflow: auto;
-    @include scrollbar(12px);
+    @include scrollbar(8px);
+
+
 
     .sent-by-logged-in {
       flex-direction: row-reverse;
@@ -24,7 +30,7 @@ div {
       overflow: hidden;
 
       .bg-secondary-lighten {
-        background-color: lighten(#6c757d, 35);
+        background-color: lighten(#6c757d, 50);
       }
 
       .user-img-container {
