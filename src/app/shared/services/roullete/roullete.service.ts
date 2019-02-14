@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {Roll} from '../../models/Roll';
-import {debounce, distinctUntilChanged, map, tap} from 'rxjs/operators';
+import {debounce, distinctUntilChanged, map} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
 
 @Injectable({
@@ -9,8 +9,9 @@ import {AngularFirestore} from '@angular/fire/firestore';
 })
 export class RouletteService {
 
-    private readonly _animationFinished: Subject<any>;
+    public readonly ROLL_INTERVAL = 30;
 
+    private readonly _animationFinished: Subject<any>;
     private readonly _rollHistory$: Observable<Roll[]>;
 
     constructor(private afs: AngularFirestore) {
@@ -43,6 +44,10 @@ export class RouletteService {
         return this._rollHistory$.pipe(
             map(history => history[history.length - 1])
         );
+    }
+
+    public get timeToNextRoll(): Observable<number> {
+        return of(20); // TODO: implement
     }
 
     public finishedAnimation() {

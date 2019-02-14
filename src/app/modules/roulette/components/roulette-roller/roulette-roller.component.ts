@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {fromEvent, Subscription, timer} from 'rxjs';
 import rollRanges from './roll-ranges';
 import {map, take} from 'rxjs/operators';
@@ -16,10 +16,14 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
   private resizeRollerSubscription: Subscription;
 
   private latestRollSubscription: Subscription;
+  private timeToNextRollSubscription: Subscription;
+
+  public timeToNextRoll: number;
 
   @ViewChild('roller') roller: ElementRef<HTMLDivElement>;
+  @ViewChild('rollProgressBar') rollProgressBar;
 
-  constructor(private rouletteService: RouletteService) { }
+  constructor(private rouletteService: RouletteService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngAfterViewInit() {
       this.roller.nativeElement.style.backgroundPositionX = '0px';
@@ -38,6 +42,13 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
           } else {
               this.rollTo(roll.rolledNumber);
           }
+      });
+
+      this.timeToNextRollSubscription = this.rouletteService.timeToNextRoll.subscribe(timeToNext => {
+          this.timeToNextRoll = timeToNext;
+          console.log(this.timeToNextRoll);
+          this.changeDetectorRef.detectChanges();
+          this.setRollCountdownBar(100 - (timeToNext / this.rouletteService.ROLL_INTERVAL) * 100);
       });
   }
 
@@ -73,12 +84,19 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
       return pos + this.roller.nativeElement.offsetWidth / 2;
   }
 
+  private setRollCountdownBar(percent: number) {
+      this.rollProgressBar.nativeElement.style.width = percent + '%';
+  }
+
   ngOnDestroy() {
     if (this.resizeRollerSubscription) {
       this.resizeRollerSubscription.unsubscribe();
     }
     if (this.latestRollSubscription) {
         this.latestRollSubscription.unsubscribe();
+    }
+    if (this.timeToNextRollSubscription) {
+        this.timeToNextRollSubscription.unsubscribe();
     }
   }
 

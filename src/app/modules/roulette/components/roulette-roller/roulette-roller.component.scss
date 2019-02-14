@@ -1,3 +1,29 @@
+@import "../../../../mixins";
+@import "~bootswatch/dist/flatly/variables";
+
+.next-roll-container {
+  height: 35px;
+  align-items: center;
+  width: 100%;
+
+  @include mediaQuery(1050px, min) {
+    width: 75%;
+  }
+  @include mediaQuery(1400px, min) {
+    width: 60%;
+  }
+  @include mediaQuery(2000px, min) {
+    width: 50%;
+  }
+
+  .roll-progress {
+    height: 2px;
+    width: 100%;
+    background-color: $danger;
+  }
+}
+
+
 .roller-container {
 
   position: relative;
