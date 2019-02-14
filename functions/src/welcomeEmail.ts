@@ -18,7 +18,7 @@ export const welcomeEmail = functions.firestore
         text: 'das geht so nid',
         html: '<strong>hey</strong>'
       });
-    } catch(e) {
+    } catch (e) {
       console.log('Error sending email!');
       return;
     }

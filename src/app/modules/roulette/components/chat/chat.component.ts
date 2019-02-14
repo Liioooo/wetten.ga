@@ -47,7 +47,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     checkEnter({keyCode}: KeyboardEvent) {
-      if (keyCode === 13) {
+      if (keyCode === 13 && this.currentlyTyped.length !== 0) {
         this.sendMessage();
       }
     }
