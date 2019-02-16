@@ -14,7 +14,7 @@ export class BetService {
     private authService: AuthService,
     private afs: AngularFirestore
   ) {
-    this.authService.user$.subscribe(user => this.betDoc = this.afs.doc(`bet/${this.authService.userRef.ref.id}`))
+    this.authService.user$.subscribe(user => this.betDoc = this.afs.doc(`bet/${user.uid}`))
       .unsubscribe();
   }
 

@@ -3,8 +3,9 @@ export interface User {
   photoURL: string;
   displayName: string;
   email: string;
-  family_name: string;
-  given_name: string;
-  gender: string;
-  phoneNumber: string;
+  amount?: number;
+  family_name?: string;
+  given_name?: string;
+  gender?: string;
+  phoneNumber?: string;
 }

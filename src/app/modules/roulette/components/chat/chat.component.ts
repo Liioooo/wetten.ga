@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {ChatService} from '../../services/chat.service';
-import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {Message} from '../../models/Message';
 import {delay, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
@@ -14,9 +13,6 @@ import Timestamp = firestore.Timestamp;
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, OnDestroy {
-
-    @ViewChild(CdkVirtualScrollViewport)
-    scrollViewport: CdkVirtualScrollViewport;
 
     @ViewChild('scrollElement') scrollElement;
 
@@ -46,7 +42,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     scrolled() {
-        if (this.scrollElement.nativeElement.scrollTop <= 30) {
+        if (this.scrollElement.nativeElement.scrollTop <= 40) {
             this.chatService.getNextMessages(this.messages[0].timestamp);
         }
     }
@@ -65,7 +61,11 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     getTimeForTimestamp(timestamp: Timestamp): string {
         const date = timestamp.toDate();
-        return `${date.getHours()}:${date.getMinutes()}`;
+        return `${this.formatNumbersForTime(date.getHours())}:${this.formatNumbersForTime(date.getMinutes())}`;
+    }
+
+    private formatNumbersForTime(number: number): number {
+        return (number < 10 ? '0' : '') + number;
     }
 
     ngOnDestroy() {

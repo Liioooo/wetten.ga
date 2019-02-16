@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from '../../../../shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-bet-amount-chooser',
@@ -7,12 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BetAmountChooserComponent implements OnInit {
 
-  public balance = 100;
+  public balance: number;
   public betAmount = 0;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.user$.subscribe(user => {
+        this.balance = user.amount;
+    });
   }
 
   public clearAmount() {

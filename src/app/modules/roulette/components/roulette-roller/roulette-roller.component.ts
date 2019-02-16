@@ -46,7 +46,6 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
 
       this.timeToNextRollSubscription = this.rouletteService.timeToNextRoll.subscribe(timeToNext => {
           this.timeToNextRoll = timeToNext;
-          console.log(this.timeToNextRoll);
           this.changeDetectorRef.detectChanges();
           this.setRollCountdownBar(100 - (timeToNext / this.rouletteService.ROLL_INTERVAL) * 100);
       });
