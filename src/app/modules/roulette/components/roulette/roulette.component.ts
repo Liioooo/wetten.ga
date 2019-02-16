@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from '../../../../shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-roulette',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RouletteComponent implements OnInit {
 
-  constructor() { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit() {
   }

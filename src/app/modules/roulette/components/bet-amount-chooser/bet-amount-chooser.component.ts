@@ -1,20 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-bet-amount-chooser',
   templateUrl: './bet-amount-chooser.component.html',
   styleUrls: ['./bet-amount-chooser.component.scss']
 })
-export class BetAmountChooserComponent implements OnInit {
+export class BetAmountChooserComponent implements OnInit, OnDestroy {
 
   public balance: number;
   public betAmount = 0;
 
+  private balanceSubscription: Subscription;
+
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.user$.subscribe(user => {
+    this.balanceSubscription = this.authService.user$.subscribe(user => {
         this.balance = user.amount;
     });
   }
@@ -50,6 +53,10 @@ export class BetAmountChooserComponent implements OnInit {
     if (this.betAmount > this.balance) {
       this.betAmount = this.balance;
     }
+  }
+
+  ngOnDestroy() {
+      this.balanceSubscription.unsubscribe();
   }
 
 }

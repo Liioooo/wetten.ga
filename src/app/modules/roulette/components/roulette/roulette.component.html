@@ -2,7 +2,7 @@
     <app-chat class="col-12 col-md-4 col-xl-3 order-1 order-md-0 pr-0"></app-chat>
     <div class="col-12 col-md-8 col-xl-9 order-0 order-md-1 pr-0">
         <app-roulette-roller></app-roulette-roller>
-        <app-bet-amount-chooser></app-bet-amount-chooser>
+        <app-bet-amount-chooser *ngIf="authService.user$ | async"></app-bet-amount-chooser>
         <div class="d-flex flex-column flex-sm-row mt-3 pl-0 justify-content-between">
             <app-set-bets type="1-7"></app-set-bets>
             <app-set-bets type="0"></app-set-bets>

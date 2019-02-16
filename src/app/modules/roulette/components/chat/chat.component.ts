@@ -64,7 +64,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         return `${this.formatNumbersForTime(date.getHours())}:${this.formatNumbersForTime(date.getMinutes())}`;
     }
 
-    private formatNumbersForTime(number: number): number {
+    private formatNumbersForTime(number: number): string {
         return (number < 10 ? '0' : '') + number;
     }
 

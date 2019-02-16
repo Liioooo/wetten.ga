@@ -1,9 +1,9 @@
-<div class="border rounded p-1">
-  <h4 class="text-center">0</h4>
+<div class="border rounded p-1" >
+  <h4 class="text-center" *ngIf="authService.user$ | async as isLoggedIn">0</h4>
   <div [ngSwitch]="type">
-    <button *ngSwitchCase="'1-7'" type="button" class="btn btn-danger btn-lg btn-block" [disabled]="!(authService.user$ | async)">1 - 7</button>
-    <button *ngSwitchCase="'0'" type="button" class="btn btn-success btn-lg btn-block" [disabled]="!(authService.user$ | async)">0</button>
-    <button *ngSwitchCase="'8-14'" type="button" class="btn btn-primary btn-lg btn-block" [disabled]="!(authService.user$ | async)">8 - 14</button>
+    <button *ngSwitchCase="'1-7'" type="button" class="btn btn-danger btn-lg btn-block" [disabled]="!isLoggedIn">1 - 7</button>
+    <button *ngSwitchCase="'0'" type="button" class="btn btn-success btn-lg btn-block" [disabled]="!isLoggedIn">0</button>
+    <button *ngSwitchCase="'8-14'" type="button" class="btn btn-primary btn-lg btn-block" [disabled]="!isLoggedIn">8 - 14</button>
   </div>
   <table class="table">
     <thead>
