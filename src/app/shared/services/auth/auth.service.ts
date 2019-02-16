@@ -6,6 +6,8 @@ import {Observable, of} from 'rxjs';
 import {User} from '../../models/User';
 import {distinctUntilChanged, map, switchMap, take, tap} from 'rxjs/operators';
 import { auth } from 'firebase/app';
+import {firestore} from 'firebase';
+import Timestamp = firestore.Timestamp;
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +61,8 @@ export class AuthService {
           family_name,
           given_name,
           gender,
-          phoneNumber
+          phoneNumber,
+          registeredSince: Timestamp.now()
       };
 
       for (const key in data) {

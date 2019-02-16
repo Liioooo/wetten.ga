@@ -1,0 +1,10 @@
+.user {
+  display: grid;
+  grid-template-columns: 70px auto 100px;
+  align-items: center;
+
+  img {
+    width: 70px;
+    height: 70px;
+  }
+}
