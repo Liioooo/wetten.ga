@@ -49,7 +49,7 @@ export class AuthService {
   private updateUserData(credentials) {
       const {uid, displayName, photoURL, email, phoneNumber} = credentials.user;
       const {family_name, given_name, gender} = credentials.additionalUserInfo.profile;
-      this._userRef = this.afs.doc(`users/${credentials.user}`);
+      this._userRef = this.afs.doc(`users/${uid}`);
 
       const data = {
           uid,
@@ -63,7 +63,7 @@ export class AuthService {
       };
 
       for (const key in data) {
-        if (!data[key]) {
+        if (data[key] === undefined || data[key] === null) {
           delete data[key];
         }
       }

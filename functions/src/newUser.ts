@@ -4,11 +4,11 @@ import {SENDGRID_API_KEY} from './environment';
 import {User} from './models/User';
 
 sendgridemail.setApiKey(SENDGRID_API_KEY);
-
-export const welcomeEmail = functions.firestore
+export const newUser = functions.firestore
   .document('users/{userId}')
   .onCreate(async event => {
     const userData = event.data() as User;
+    await event.ref.set({amount: 0},{merge: true});
 
     try {
       return sendgridemail.send({

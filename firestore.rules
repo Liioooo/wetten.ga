@@ -11,8 +11,8 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow update: if isOwner(userId) && 'amount' in incomingData();
-      allow create: if isOwner(userId) && 'amount' in incomingData() && !exists(/databases/$(database)/documents/users/$(currentUser().uid))
+      allow update: if isOwner(userId) && !has('amount');
+      allow create: if isOwner(userId) && !has('amount') && !userDocExists();
     }
 
     match /users/{document=**} {
@@ -54,6 +54,15 @@ service cloud.firestore {
       return request.auth;
     }
 
+		// Check if POST data is containting specific property
+    function has(property) {
+    	return property in incomingData();
+    }
+
+    // Check if document for specific user already exists
+    function userDocExists() {
+    	return exists(/databases/$(database)/documents/users/$(currentUser().uid))
+    }
 
   }
 }
