@@ -71,7 +71,7 @@ export class AuthService {
         }
       }
 
-      return this._userRef.set(data, {merge: true});
+      return this._userRef.set(data as User, {merge: true});
   }
 
 }

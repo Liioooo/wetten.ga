@@ -1,29 +1,38 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {Bet} from '../../models/Bet';
+import {Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BetService {
+export class BetService implements OnDestroy{
 
-  private betDoc: AngularFirestoreDocument<Bet>;
-
+  public betAmount = 0;
+  private betDoc: AngularFirestoreDocument<any>;
+  private subscription: Subscription;
+  
   constructor(
     private authService: AuthService,
     private afs: AngularFirestore
   ) {
-    this.authService.user$.subscribe(user => this.betDoc = this.afs.doc(`bet/${user.uid}`))
-      .unsubscribe();
+    this.subscription = this.authService.user$.subscribe(user => {
+      this.betDoc = this.afs.doc(`bets/${user.uid}`);
+    });
   }
 
-  async updateStatus(bet: Bet) {
-    await this.betDoc.set(bet, {merge: true});
+  async setBet(bet: string) {
+    if (this.betAmount > 0) {
+      await this.betDoc.set({[bet]: this.betAmount}, {merge: true});
+    }
   }
 
-  async deleteBet() {
+  /*async deleteBet() {
     await this.betDoc.delete();
+  }*/
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

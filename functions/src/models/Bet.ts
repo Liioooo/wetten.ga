@@ -3,7 +3,8 @@ import * as admin from 'firebase-admin';
 type DocumentReference = admin.firestore.DocumentReference;
 
 export interface Bet {
-  amount: number;
-  betType: BetType;
+  redAmount?: 0;
+  greenAmount?: 0;
+  blackAmount?: 0;
   user: DocumentReference;
 }

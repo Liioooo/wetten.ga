@@ -1,6 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {Subscription} from 'rxjs';
+import {BetService} from '../../../../shared/services/bet/bet.service';
 
 @Component({
   selector: 'app-bet-amount-chooser',
@@ -9,12 +10,13 @@ import {Subscription} from 'rxjs';
 })
 export class BetAmountChooserComponent implements OnInit, OnDestroy {
 
-  public balance: number;
-  public betAmount = 0;
-
+  public balance: number = 0;
   private balanceSubscription: Subscription;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    public betService: BetService
+  ) { }
 
   ngOnInit() {
     this.balanceSubscription = this.authService.user$.subscribe(user => {
@@ -23,35 +25,35 @@ export class BetAmountChooserComponent implements OnInit, OnDestroy {
   }
 
   public clearAmount() {
-    this.betAmount = 0;
+    this.betService.betAmount = 0;
   }
 
   public maxAmount() {
-    this.betAmount = this.balance;
+    this.betService.betAmount = this.balance;
   }
 
   public addAmount(toAdd: number) {
-    this.betAmount += toAdd;
+    this.betService.betAmount += toAdd;
   }
 
   public multiply(toMultipy: number) {
-    this.betAmount *= toMultipy;
+    this.betService.betAmount *= toMultipy;
   }
 
   public hasEnough(toAdd: number): boolean {
-      return this.betAmount + toAdd <= this.balance;
+      return this.betService.betAmount + toAdd <= this.balance;
   }
 
   public hasEnoughMultiply(toMultiply): boolean {
-    return this.betAmount * toMultiply <= this.balance;
+    return this.betService.betAmount * toMultiply <= this.balance;
   }
 
   public typedInAmountField() {
-    if (this.betAmount < 0) {
-      this.betAmount = 0;
+    if (this.betService.betAmount < 0) {
+      this.betService.betAmount = 0;
     }
-    if (this.betAmount > this.balance) {
-      this.betAmount = this.balance;
+    if (this.betService.betAmount > this.balance) {
+      this.betService.betAmount = this.balance;
     }
   }
 

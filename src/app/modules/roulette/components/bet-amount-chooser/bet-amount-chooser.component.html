@@ -11,5 +11,5 @@
     <button type="button" class="btn btn-secondary" [disabled]="!hasEnoughMultiply(2)" (click)="multiply(2)">x2</button>
     <button type="button" class="btn btn-secondary" (click)="maxAmount()">Max</button>
   </div>
-  <input type="number" class="form-control bet-amount-input" placeholder="Bet amount" [(ngModel)]="betAmount" (change)="typedInAmountField()">
+  <input disabled type="number" class="form-control bet-amount-input" placeholder="Bet amount" [(ngModel)]="betService.betAmount" min="0" [max]="balance">
 </div>

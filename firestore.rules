@@ -11,7 +11,7 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow update: if isOwner(userId) && !has('amount');
+      allow update: if isOwner(userId) && (!has('amount') || futureDocument().amount == currentDocument().amount);
       allow create: if isOwner(userId) && !has('amount') && !userDocExists();
     }
 
@@ -44,9 +44,14 @@ service cloud.firestore {
       return resource.data;
     }
 
-		// Get POST data coming from the request
-    function incomingData() {
+		// Get Document after operation
+    function futureDocument() {
       return request.resource.data;
+    }
+
+		// Get current state without operation of requested Document
+		function currentDocument() {
+    	return resource.data;
     }
 
 		// Get current authenticated user
@@ -56,7 +61,7 @@ service cloud.firestore {
 
 		// Check if POST data is containting specific property
     function has(property) {
-    	return property in incomingData();
+    	return property in futureDocument();
     }
 
     // Check if document for specific user already exists
