@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import {Observable, of, Subject} from 'rxjs';
+import {interval, Observable, of, Subject} from 'rxjs';
 import {Roll} from '../../models/Roll';
-import {debounce, distinctUntilChanged, map} from 'rxjs/operators';
+import {concatMap, debounce, distinctUntilChanged, map, mergeMap, switchMap, tap, timestamp} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {firestore} from 'firebase';
+import Timestamp = firestore.Timestamp;
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +48,27 @@ export class RouletteService {
         );
     }
 
+    public get lastRollTime(): Observable<Timestamp> {
+        return this.latestRoll$.pipe(
+          map(roll => roll.timestamp)
+        );
+    }
+
     public get timeToNextRoll(): Observable<number> {
-        return of(20); // TODO: implement
+        return this.lastRollTime.pipe(
+          debounce(() => this._animationFinished),
+          switchMap(lt => {
+              return interval(15).pipe(
+                  map(t => {
+                      let time = (lt.toMillis() + this.ROLL_INTERVAL * 1000 - Timestamp.now().toMillis()) / 1000;
+                      if (time < 0) {
+                          time = 0;
+                      }
+                      return time;
+                  })
+              );
+          })
+        );
     }
 
     public finishedAnimation() {
