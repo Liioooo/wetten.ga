@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
+import {Title} from '@angular/platform-browser';
+import {projectName} from '../../../../../environments/project-name';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,12 +12,16 @@ import Timestamp = firestore.Timestamp;
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(public authService: AuthService) { }
+  constructor(
+      public authService: AuthService,
+      private titleSerice: Title
+  ) { }
 
   ngOnInit() {
+    this.titleSerice.setTitle(` ${projectName} - Dashboard`);
   }
 
-  public covertTimestampToString(timestamp: Timestamp): string {
+  public convertTimestampToString(timestamp: Timestamp): string {
     return timestamp.toDate().toLocaleString();
   }
 

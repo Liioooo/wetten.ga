@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {projectName} from '../../../../../environments/project-name';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private titleSerice: Title) { }
 
   ngOnInit() {
+    this.titleSerice.setTitle(`${projectName} - Home`);
   }
 
 }
