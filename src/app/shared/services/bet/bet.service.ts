@@ -20,7 +20,7 @@ export class BetService implements OnDestroy {
     private afs: AngularFirestore
   ) {
     this.subscription = this.authService.user$.subscribe(user => {
-      const doc = this.afs.doc(`bets/${user.uid}`);
+      const doc = this.afs.doc<Bet>(`bets/${user.uid}`);
       this.betDoc = doc;
       this._bets = doc.valueChanges();
     });
@@ -32,7 +32,16 @@ export class BetService implements OnDestroy {
 
   async setBet(bet: string) {
     if (this.betAmount > 0) {
-      await this.betDoc.set({[bet]: this.betAmount, user: this.authService.userRef.ref}, {merge: true});
+      this.afs.firestore.runTransaction(async transaction => {
+
+        const currentBetDoc = await transaction.get(this.betDoc.ref);
+        if (!currentBetDoc.exists) {
+          await transaction.set(this.betDoc.ref, {[bet]: this.betAmount, user: this.authService.userRef.ref}, {merge: true});
+        } else {
+          await transaction.set(this.betDoc.ref, {[bet]: this.betAmount + currentBetDoc.data()[bet], user: this.authService.userRef.ref}, {merge: true});
+        }
+
+      });
     }
   }
 
