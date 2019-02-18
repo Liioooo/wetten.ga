@@ -42,9 +42,8 @@ export class BetService implements OnDestroy {
   }
 
   async setBet(bet: string) {
-    if (this.betAmount > 0) {
+    if (this.betAmount > -100) {
       this.afs.firestore.runTransaction(async transaction => {
-
         const currentBetDoc = await transaction.get(this.betDoc.ref);
         if (!currentBetDoc.exists) {
           await transaction.set(this.betDoc.ref, {[bet]: this.betAmount, user: this.authService.userRef.ref}, {merge: true});

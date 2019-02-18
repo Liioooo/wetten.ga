@@ -3,5 +3,5 @@ admin.initializeApp();
 
 export { updateRolls } from './updateRolls';
 export { newUser } from './newUser';
-
+export { removeMoney } from './removeMoney';
 
