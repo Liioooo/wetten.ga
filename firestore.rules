@@ -1,6 +1,22 @@
 service cloud.firestore {
   match /databases/{database}/documents {
 
+		match /bets/{userId} {
+    	allow read;
+      allow create: if isOwner(userId) && !betDocExists() && validateAmounts();
+      allow update: if isOwner(userId) && validateAmounts();
+    }
+
+    function validateAmounts() {
+    	return checkAmount('redAmount') && checkAmount('blackAmount') && checkAmount('greenAmount');
+    }
+
+    function checkAmount(property) {
+    	return (true
+      			 && (futureDocument()[property] - currentDocument()[property]) <= getUserData().amount)
+             || !has(property);
+    }
+
     match /rolls/{document=**} {
     	allow read;
     }
@@ -11,7 +27,8 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow update: if isOwner(userId) && (!has('amount') || futureDocument().amount == currentDocument().amount);
+      allow update: if isOwner(userId)
+    								&& (!has('amount') || futureDocument().amount == currentDocument().amount);
       allow create: if isOwner(userId) && !has('amount') && !userDocExists();
     }
 
@@ -36,13 +53,8 @@ service cloud.firestore {
 
     // Get current user document
     function getUserData() {
-  		return get(/databases/$(database)/documents/accounts/$(request.auth.uid)).data;
+  		return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
 		}
-
-    // Get data being requested -> works for GET requests
-    function existingData() {
-      return resource.data;
-    }
 
 		// Get Document after operation
     function futureDocument() {
@@ -67,6 +79,10 @@ service cloud.firestore {
     // Check if document for specific user already exists
     function userDocExists() {
     	return exists(/databases/$(database)/documents/users/$(currentUser().uid))
+    }
+
+    function betDocExists() {
+        return exists(/databases/$(database)/documents/bets/$(currentUser().uid))
     }
 
   }
