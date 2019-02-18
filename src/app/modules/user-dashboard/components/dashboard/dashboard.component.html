@@ -3,7 +3,7 @@
     <img [src]="user.photoURL" class="rounded-circle text-center">
     <div class="pl-2">
       <h3 class="mb-0">{{user.displayName}}</h3>
-      <p class="mb-0">registered since: {{covertTimestampToString(user.registeredSince)}}</p>
+      <p class="mb-0">registered since: {{convertTimestampToString(user.registeredSince)}}</p>
     </div>
     <button class="btn btn-secondary" (click)="authService.signOut()">Logout</button>
   </div>

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {Subscription} from 'rxjs';
 import {BetService} from '../../../../shared/services/bet/bet.service';
@@ -46,15 +46,6 @@ export class BetAmountChooserComponent implements OnInit, OnDestroy {
 
   public hasEnoughMultiply(toMultiply): boolean {
     return this.betService.betAmount * toMultiply <= this.balance;
-  }
-
-  public typedInAmountField() {
-    if (this.betService.betAmount < 0) {
-      this.betService.betAmount = 0;
-    }
-    if (this.betService.betAmount > this.balance) {
-      this.betService.betAmount = this.balance;
-    }
   }
 
   ngOnDestroy() {
