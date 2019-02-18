@@ -1,4 +1,3 @@
-import {BetType} from './enums';
 import * as admin from 'firebase-admin';
 type DocumentReference = admin.firestore.DocumentReference;
 

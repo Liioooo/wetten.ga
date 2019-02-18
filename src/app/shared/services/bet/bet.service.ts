@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class BetService implements OnDestroy{
+export class BetService implements OnDestroy {
 
   public betAmount = 0;
   private betDoc: AngularFirestoreDocument<any>;
@@ -23,7 +23,7 @@ export class BetService implements OnDestroy{
 
   async setBet(bet: string) {
     if (this.betAmount > 0) {
-      await this.betDoc.set({[bet]: this.betAmount}, {merge: true});
+      await this.betDoc.set({[bet]: this.betAmount, user: this.authService.userRef.ref}, {merge: true});
     }
   }
 

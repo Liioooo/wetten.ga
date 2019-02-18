@@ -2,7 +2,6 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import {Roll} from './models/Roll';
 import {Bet} from './models/Bet';
-// import {Bet} from './models/Bet';
 
 const db = admin.firestore();
 
@@ -27,31 +26,34 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
 
     await ref.add(newRoll);
 
-    const waitArr = [];
     const bets: Bet[] = (await db.collection('bets')
         .get()
     ).docs.map(doc => doc.data()) as Bet[];
 
     bets.forEach(bet => {
       const {redAmount = 0, greenAmount = 0, blackAmount = 0} = bet;
-      db.runTransaction(transaction => transaction.get(bet.user))
+      db.runTransaction(transaction => transaction.get(bet.user)
         .then(userDoc => {
-          if (!userDoc.exists) return;
+          if (!userDoc.exists) { return; }
 
           let amount = 0;
-          if(num === 0) {
+          if (newRoll.rolledNumber === 0) {
             amount = greenAmount * 15;
-          } else if (num >=1 && num <= 7) {
+          } else if (newRoll.rolledNumber >= 1 && newRoll.rolledNumber <= 7) {
             amount = redAmount * 2;
-          } else if (num >= 8 && num <= 14) {
+          } else if (newRoll.rolledNumber >= 8 && newRoll.rolledNumber <= 14) {
             amount = blackAmount * 2;
           }
 
-          if(amount === 0) return;
+          if (amount === 0) { return; }
 
-          amount += userDoc.data().amount;
-          transaction.update(bet.user, { amount })
-        });
+          const data = userDoc.data();
+          if (data === undefined) {return;}
+
+          amount += data.amount;
+          transaction.update(bet.user, { amount });
+        }))
+        .catch(console.error);
     });
 
 

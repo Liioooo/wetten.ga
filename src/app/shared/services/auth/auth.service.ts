@@ -21,6 +21,7 @@ export class AuthService {
       this._user$ = this.fireAuth.authState.pipe(
           switchMap(user => {
               if (user) {
+                  this._userRef = this.afs.doc<User>(`users/${user.uid}`);
                   return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
               } else {
                   return of(null);
@@ -61,8 +62,7 @@ export class AuthService {
           family_name,
           given_name,
           gender,
-          phoneNumber,
-          registeredSince: Timestamp.now()
+          phoneNumber
       };
 
       for (const key in data) {
