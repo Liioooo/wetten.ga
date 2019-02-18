@@ -13,9 +13,9 @@
       </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>*User*</td>
-      <td>*20*</td>
+    <tr *ngFor="let bet of bets | async">
+      <td>{{bet.name}}</td>
+      <td>{{bet.amount}}</td>
     </tr>
     </tbody>
   </table>
