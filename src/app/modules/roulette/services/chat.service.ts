@@ -6,6 +6,7 @@ import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
 import {AuthService} from '../../../shared/services/auth/auth.service';
+import {joinCollections} from '../../../shared/rxjs-operators/joinCollections';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +37,6 @@ export class ChatService {
     }
 
     getBatch(offset): Observable<any> {
-        let nachrichten;
-        const joinKeys = {};
 
         return this.afs.collection<Message>('chat', ref => ref
             .orderBy('timestamp', 'desc')
@@ -51,21 +50,7 @@ export class ChatService {
                     return {id, ...data} as Message;
                 }).reverse();
             }),
-            switchMap(tempMessages => {
-                nachrichten = tempMessages;
-                const uids = Array.from(new Set(tempMessages.map(v => v.user.id)));
-                const userDocs = uids.map(id =>
-                    this.afs.doc(`users/${id}`).valueChanges()
-                );
-                return userDocs.length ? combineLatest(userDocs) : of([]);
-            }),
-            map(arr => {
-                arr.forEach(v => joinKeys[v.uid] = v);
-                nachrichten = nachrichten.map(v => {
-                    return { ...v, userDetails: joinKeys[v.user.id] };
-                });
-                return nachrichten;
-            }),
+            joinCollections('user', 'uid', 'users', this.afs, 'userDetails'),
             mergeMap(messages => this.authService.user$.pipe(
                 map(user => {
                     return messages.map(message => {

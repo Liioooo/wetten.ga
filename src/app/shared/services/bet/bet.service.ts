@@ -4,6 +4,7 @@ import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestor
 import {combineLatest, Observable, ObservableInput, of, Subscription} from 'rxjs';
 import {Bet} from '../../models/Bet';
 import {map, switchMap} from 'rxjs/operators';
+import {joinCollections} from '../../rxjs-operators/joinCollections';
 
 @Injectable({
   providedIn: 'root'
@@ -34,26 +35,9 @@ export class BetService implements OnDestroy {
   }
 
   get allBets(): Observable<Bet[]> {
-      let bets;
-      const joinKeys = {};
-
       return this.afs.collection<Bet>('bets').valueChanges()
           .pipe(
-              switchMap(tempBets => {
-                bets = tempBets;
-                const uids = Array.from(new Set(bets.map(v => v.user.id)));
-                const userDocs = uids.map(id =>
-                    this.afs.doc(`users/${id}`).valueChanges()
-                );
-                return userDocs.length ? combineLatest(userDocs) : of([]);
-              }),
-              map(arr => {
-                arr.forEach(v => joinKeys[v.uid] = v);
-                bets = bets.map(v => {
-                  return { ...v, user: joinKeys[v.user.id] };
-                });
-                return bets;
-              })
+             joinCollections('user', 'uid', 'users', this.afs)
           );
   }
 

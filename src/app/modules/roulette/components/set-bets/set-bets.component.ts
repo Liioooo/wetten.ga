@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {BetService} from '../../../../shared/services/bet/bet.service';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-set-bets',
