@@ -21,9 +21,11 @@ export class BetService implements OnDestroy {
     private afs: AngularFirestore
   ) {
     this.subscription = this.authService.user$.subscribe(user => {
-      const doc = this.afs.doc<Bet>(`bets/${user.uid}`);
-      this.betDoc = doc;
-      this._bets = doc.valueChanges();
+      if (user) {
+          const doc = this.afs.doc<Bet>(`bets/${user.uid}`);
+          this.betDoc = doc;
+          this._bets = doc.valueChanges();
+      }
     });
   }
 
