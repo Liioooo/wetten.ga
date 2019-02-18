@@ -1,7 +1,8 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {Subscription} from 'rxjs';
+import {Observable, ObservableInput, Subscription} from 'rxjs';
+import {Bet} from '../../models/Bet';
 
 @Injectable({
   providedIn: 'root'
@@ -9,16 +10,24 @@ import {Subscription} from 'rxjs';
 export class BetService implements OnDestroy {
 
   public betAmount = 0;
+
   private betDoc: AngularFirestoreDocument<any>;
   private subscription: Subscription;
+  private _bets: Observable<Bet>;
   
   constructor(
     private authService: AuthService,
     private afs: AngularFirestore
   ) {
     this.subscription = this.authService.user$.subscribe(user => {
-      this.betDoc = this.afs.doc(`bets/${user.uid}`);
+      const doc = this.afs.doc(`bets/${user.uid}`);
+      this.betDoc = doc;
+      this._bets = doc.valueChanges();
     });
+  }
+
+  get bets(): Observable<Bet> {
+    return this._bets;
   }
 
   async setBet(bet: string) {
