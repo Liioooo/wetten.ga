@@ -8,13 +8,17 @@ service cloud.firestore {
     }
 
     function validateAmounts() {
-    	return checkAmount('redAmount') && checkAmount('blackAmount') && checkAmount('greenAmount');
+    	return checkMinusAmount('redAmount') && checkMinusAmount('blackAmount')
+      			 && checkMinusAmount('greenAmount') && checkSums();
     }
 
-    function checkAmount(property) {
-    	return (true
-      			 && (futureDocument()[property] - currentDocument()[property]) <= getUserData().amount)
-             || !has(property);
+    function checkSums() {
+    	return futureDocument().redAmount +  futureDocument().blackAmount +
+      futureDocument().greenAmount <= getUserDoc().amount;
+    }
+
+    function checkMinusAmount(property) {
+    	return resource == null || !(property in currentDocument()) || futureDocument()[property] - currentDocument()[property] >= 0;
     }
 
     match /rolls/{document=**} {

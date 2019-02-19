@@ -15,7 +15,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit() {
   }
 
-  public loginClicked() {
-      this.authService.signIn();
+  public loginClicked(type: string) {
+      this.authService.signIn(type);
   }
 }

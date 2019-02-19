@@ -16,8 +16,11 @@
         <div *ngIf="authService.user$ | async; then loggedIn else notLoggedIn;"></div>
 
         <ng-template #notLoggedIn>
-          <a class="googleLoginLink" (click)="loginClicked()">
+          <a class="googleLoginLink" (click)="loginClicked('Google')">
             <img class="userImg" src="/assets/google-login.svg" alt="google-icon">
+          </a>
+          <a class="googleLoginLink" (click)="loginClicked('Facebook')">
+            <img class="userImg" src="/assets/facebook-login.svg" alt="google-icon">
           </a>
         </ng-template>
 

@@ -4,7 +4,7 @@ import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestor
 import {Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {User} from '../../models/User';
-import {distinctUntilChanged, map, switchMap, take, tap} from 'rxjs/operators';
+import {distinctUntilChanged, first, map, switchMap, take, tap} from 'rxjs/operators';
 import { auth } from 'firebase/app';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
@@ -38,10 +38,14 @@ export class AuthService {
     return this._userRef;
   }
 
-  public async signIn() {
-      const provider = new auth.GoogleAuthProvider();
-      const credential = await this.fireAuth.auth.signInWithPopup(provider);
-      return this.updateUserData(credential);
+  public async signIn(type: string) {
+      const provider = new auth[`${type}AuthProvider`]();
+      try {
+        const credential = await this.fireAuth.auth.signInWithPopup(provider);
+        return this.updateUserData(credential);
+      } catch (e) {
+        console.error(e);
+      }
   }
 
   async signOut() {
@@ -50,11 +54,11 @@ export class AuthService {
   }
 
   private updateUserData(credentials) {
-      const {uid, displayName, photoURL, email, phoneNumber} = credentials.user;
-      const {family_name, given_name, gender} = credentials.additionalUserInfo.profile;
-      this._userRef = this.afs.doc(`users/${uid}`);
+    const {uid, displayName, photoURL, email, phoneNumber} = credentials.user;
+    const {gender, last_name, first_name, family_name = last_name, given_name = first_name} = credentials.additionalUserInfo.profile;
+    this._userRef = this.afs.doc(`users/${uid}`);
 
-      const data = {
+    const data = {
           uid,
           displayName,
           photoURL,
@@ -65,13 +69,12 @@ export class AuthService {
           phoneNumber
       };
 
-      for (const key in data) {
+    for (const key in data) {
         if (data[key] === undefined || data[key] === null) {
           delete data[key];
         }
-      }
-
-      return this._userRef.set(data as User, {merge: true});
+    }
+    return this._userRef.set(data as User, {merge: true});
   }
 
 }
