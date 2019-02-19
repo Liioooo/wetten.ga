@@ -3,7 +3,12 @@ import * as sendgridemail from '@sendgrid/mail';
 import {SENDGRID_API_KEY} from './environment';
 import {User} from './models/User';
 import * as admin from 'firebase-admin';
+import {BetObj} from './models/Bet';
+
+const db = admin.firestore();
 sendgridemail.setApiKey(SENDGRID_API_KEY);
+
+
 export const newUser = functions.firestore
   .document('users/{userId}')
   .onCreate(async event => {
@@ -13,7 +18,8 @@ export const newUser = functions.firestore
       registeredSince: admin.firestore.Timestamp.now()
     }, {merge: true});
 
-
+    const ref = await db.doc(`bets/${userData.uid}`);
+    await ref.set(new BetObj(event.ref), {merge: true});
 
     try {
       return sendgridemail.send({

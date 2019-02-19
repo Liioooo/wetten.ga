@@ -13,12 +13,13 @@ service cloud.firestore {
     }
 
     function checkSums() {
-    	return futureDocument().redAmount +  futureDocument().blackAmount +
-      futureDocument().greenAmount <= getUserDoc().amount;
+    	return futureDocument().redAmount +
+      			 futureDocument().blackAmount +
+             futureDocument().greenAmount <= getUserData().amount
     }
 
     function checkMinusAmount(property) {
-    	return resource == null || !(property in currentDocument()) || futureDocument()[property] - currentDocument()[property] >= 0;
+    	return futureDocument()[property] - currentDocument()[property] >= 0;
     }
 
     match /rolls/{document=**} {

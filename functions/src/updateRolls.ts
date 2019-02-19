@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import {Roll} from './models/Roll';
 import {Bet} from './models/Bet';
+type QueryDocumentSnapshot = admin.firestore.QueryDocumentSnapshot;
 
 const db = admin.firestore();
 
@@ -26,23 +27,49 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
 
     await ref.add(newRoll);
 
-    const bets: Bet[] = (await db.collection('bets')
-        .get()
-    ).docs.map(doc => doc.data()) as Bet[];
+  const betsRed: QueryDocumentSnapshot[] = (await db.collection('bets')
+      .where("redAmount", ">", 0)
+      .get()
+  ).docs;
+  const betsGreen: QueryDocumentSnapshot[] = (await db.collection('bets')
+      .where("greenAmount", ">", 0)
+      .get()
+  ).docs;
+  const betsBlack: QueryDocumentSnapshot[] = (await db.collection('bets')
+      .where("blackAmount", ">", 0)
+      .get()
+  ).docs;
 
+  const tempBets = [...betsRed, ...betsGreen, ...betsBlack];
+  console.log("tempBets Length: "+tempBets.length)
+  const bets: QueryDocumentSnapshot[] = [];
+  for (let i = 0; i < tempBets.length; i++) {
+    let included = false;
+    for (let j = 0; j < bets.length; j++) {
+      if(tempBets[i].isEqual(bets[j])) {
+        included = true;
+        break;
+      }
+    }
+    if(!included) {
+      bets.push(tempBets[i]);
+    }
+  }
     bets.forEach(bet => {
-      const {redAmount = 0, greenAmount = 0, blackAmount = 0} = bet;
-      db.runTransaction(transaction => transaction.get(bet.user)
+      const betData = bet.data() as Bet;
+      console.log(betData)
+      const {redAmount = 0, greenAmount = 0, blackAmount = 0} = betData;
+      db.runTransaction(transaction => transaction.get(betData.user)
         .then(userDoc => {
           if (!userDoc.exists) { return; }
 
           let amount = 0;
           if (newRoll.rolledNumber === 0) {
-            amount = greenAmount * 15;
+            amount = (greenAmount * 15) - blackAmount - redAmount;
           } else if (newRoll.rolledNumber >= 1 && newRoll.rolledNumber <= 7) {
-            amount = redAmount * 2;
+            amount = redAmount - greenAmount - blackAmount;
           } else if (newRoll.rolledNumber >= 8 && newRoll.rolledNumber <= 14) {
-            amount = blackAmount * 2;
+            amount = blackAmount - redAmount - greenAmount;
           }
 
           if (amount === 0) { return; }
@@ -51,9 +78,11 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
           if (data === undefined) {return;}
 
           amount += data.amount;
-          transaction.update(bet.user, { amount });
+          transaction.update(betData.user, { amount });
+          transaction.update(bet.ref, {redAmount: 0, blackAmount: 0, greenAmount: 0});
         }))
         .catch(console.error);
+
     });
 
 
