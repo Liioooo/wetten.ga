@@ -17,14 +17,14 @@
 
         <ng-template #notLoggedIn>
           <a class="googleLoginLink" (click)="loginClicked()">
-            <img class="userImg" src="/assets/google-login.svg">
+            <img class="userImg" src="/assets/google-login.svg" alt="google-icon">
           </a>
         </ng-template>
 
         <ng-template #loggedIn>
           <div *ngIf="authService.user$ | async as user" class="user-bar d-flex" routerLinkActive="active" routerLink="/user-dashboard">
             <a class="nav-link">{{user.displayName}}</a>
-            <img class="userImg rounded-circle" [src]="user.photoURL">
+            <img class="userImg rounded-circle" [src]="user.photoURL" alt="profile-picture">
           </div>
         </ng-template>
       </li>
