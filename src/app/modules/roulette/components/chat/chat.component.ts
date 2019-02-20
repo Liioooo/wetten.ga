@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '@shared/services/auth/auth.service';
-import {ChatService} from '../../services/chat.service';
+import {ChatService} from '../../services/chat/chat.service';
 import {Message} from '../../models/Message';
-import {delay, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -19,37 +19,31 @@ export class ChatComponent implements OnInit, OnDestroy {
     public messages: Message[];
     public currentlyTyped = '';
     private messageSubscription: Subscription;
-
-    private lastSent: string;
-    private firstLoad = true;
+    private newMessageSubscription: Subscription;
 
     constructor(public authService: AuthService, public chatService: ChatService) {
     }
 
     ngOnInit() {
-        this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight);
         this.chatService.getNextMessages();
-        this.messageSubscription = this.chatService.getMessages().pipe(
-            tap(messages => this.messages = messages),
-            delay(100)
-        ).subscribe(messages => {
-            if ((messages[messages.length - 1] && this.lastSent === messages[messages.length - 1].message) || this.firstLoad) {
-                this.lastSent = '';
-                this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight);
-                this.firstLoad = false;
-            }
+        this.messageSubscription = this.chatService.getMessages().subscribe(messages => {
+            this.messages = messages;
+        });
+        this.newMessageSubscription = this.chatService.onNewMessage.pipe(
+            delay(30)
+        ).subscribe(() => {
+            this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight);
         });
     }
 
     scrolled() {
-        if (this.scrollElement.nativeElement.scrollTop <= 40) {
+        if (this.scrollElement.nativeElement.scrollTop <= 20) {
             this.chatService.getNextMessages(this.messages[0].timestamp);
         }
     }
 
     sendMessage() {
       this.chatService.sendMessage(this.currentlyTyped);
-      this.lastSent = this.currentlyTyped;
       this.currentlyTyped = '';
     }
 
@@ -70,5 +64,6 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
       this.messageSubscription.unsubscribe();
+      this.newMessageSubscription.unsubscribe();
     }
 }

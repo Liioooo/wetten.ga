@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map, mergeMap, scan, switchMap, take, tap, throttleTime} from 'rxjs/operators';
-import {Message} from '../models/Message';
-import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
+import {map, mergeMap, scan, take, tap, throttleTime} from 'rxjs/operators';
+import {Message} from '../../models/Message';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
 import {AuthService} from '@shared/services/auth/auth.service';
@@ -13,11 +13,14 @@ import {joinCollections} from '@shared/rxjs-operators/joinCollections';
 })
 export class ChatService {
 
+    private receivedNewMessage = new Subject<void>();
+
     private offset = new BehaviorSubject(null);
 
     constructor(private afs: AngularFirestore, private authService: AuthService) { }
 
     getMessages(): Observable<Message[]> {
+      let lastMessageId: string;
       return this.offset.pipe(
           throttleTime(500),
           mergeMap(n => this.getBatch(n)),
@@ -28,8 +31,22 @@ export class ChatService {
               const messageArray = [];
               Object.keys(messages).forEach(message => messageArray.push(messages[message]));
               return messageArray.sort((m1: Message, m2: Message) => m1.timestamp.seconds - m2.timestamp.seconds);
+          }),
+          tap(messages => {
+              if (messages.length >= 1) {
+                if (!lastMessageId) {
+                    this.receivedNewMessage.next();
+                } else if (lastMessageId !== messages[messages.length - 1].id) {
+                    this.receivedNewMessage.next();
+                }
+                lastMessageId = messages[messages.length - 1].id;
+              }
           })
       );
+    }
+
+    public get onNewMessage(): Observable<void> {
+        return this.receivedNewMessage.asObservable();
     }
 
     getNextMessages(offset: any = '') {

@@ -10,7 +10,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import {BetAmountChooserComponent} from './components/bet-amount-chooser/bet-amount-chooser.component';
 import {FormsModule} from '@angular/forms';
 import {SetBetsComponent} from './components/set-bets/set-bets.component';
-import {ChatService} from './services/chat.service';
+import {ChatService} from './services/chat/chat.service';
 
 @NgModule({
   declarations: [
