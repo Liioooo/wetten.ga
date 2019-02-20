@@ -19,11 +19,11 @@ export const joinCollections = (keyInCollectionA: string, keyInCollectionB: stri
             return joinedDocs.length ? combineLatest(joinedDocs) : of([]);
         }),
         map(arr => {
-            arr.forEach(v => joinKeys[v[keyInCollectionB]] = v);
+            arr.filter(v => v !== undefined).forEach(v => joinKeys[v[keyInCollectionB]] = v);
             values = values.map(v => {
                 return { ...v, [toAssignJoinedObject]: joinKeys[v[keyInCollectionA].id] };
             });
-            return values;
+            return values.filter(v => v[toAssignJoinedObject] !== undefined);
         })
     );
 };
