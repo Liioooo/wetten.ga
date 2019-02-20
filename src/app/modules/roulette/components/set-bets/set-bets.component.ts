@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {BetService} from '@shared/services/bet/bet.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
 
@@ -53,12 +53,10 @@ export class SetBetsComponent implements OnInit {
   }
 
   placeBet(type: string) {
-    if (this.betService.betAmount > 0) {
-      this.betService.setBet(type);
-    } else if (false) {
-
+    if (this.betService.betAmount <= 0) {
+        this.toastrService.error('Please choose a valid amount', 'Amount missing');
     } else {
-      this.toastrService.error('Please choose a valid amount', 'Amount missing');
+        this.betService.setBet(type);
     }
   }
 }

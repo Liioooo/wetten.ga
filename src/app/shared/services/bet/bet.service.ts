@@ -17,7 +17,6 @@ export class BetService implements OnDestroy {
   private betDoc: AngularFirestoreDocument<any>;
   private subscription: Subscription;
   private _bets: Observable<Bet>;
-  private _userMoney: number;
   
   constructor(
     private authService: AuthService,
@@ -29,7 +28,6 @@ export class BetService implements OnDestroy {
           const doc = this.afs.doc<Bet>(`bets/${user.uid}`);
           this.betDoc = doc;
           this._bets = doc.valueChanges();
-          this._userMoney = user.amount;
       }
     });
   }

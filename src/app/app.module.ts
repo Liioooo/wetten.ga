@@ -14,7 +14,8 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { FooterComponent } from './components/footer/footer.component';
+import { FooterComponent } from '@components/footer/footer.component';
+import {NgbCollapseModule, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FooterComponent } from './components/footer/footer.component';
       AngularFireAuthModule,
       AngularFireDatabaseModule,
       BrowserAnimationsModule,
-      ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+      ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+      NgbCollapseModule
   ],
   providers: [],
   bootstrap: [AppComponent]

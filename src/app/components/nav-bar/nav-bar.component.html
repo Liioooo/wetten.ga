@@ -1,6 +1,12 @@
-<nav class="navbar navbar-expand navbar-dark bg-primary">
+<nav class="navbar navbar-dark bg-primary navbar-expand-sm">
+
   <a class="navbar-brand" routerLink="/home">{{projectName}}</a>
 
+  <button class="navbar-toggler" type="button" (click)="collapsed = !collapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse w-100" [ngbCollapse]="collapsed">
     <ul class="navbar-nav">
       <li class="nav-item" routerLinkActive="active" >
         <a class="nav-link" routerLink="/home">Home</a>
@@ -16,20 +22,23 @@
         <div *ngIf="authService.user$ | async; then loggedIn else notLoggedIn;"></div>
 
         <ng-template #notLoggedIn>
-          <a class="googleLoginLink" (click)="loginClicked('Google')">
-            <img class="userImg" src="/assets/google-login.svg" alt="google-icon">
-          </a>
-          <a class="googleLoginLink ml-2" (click)="loginClicked('Facebook')">
-            <img class="userImg" src="/assets/facebook-login.svg" alt="google-icon">
-          </a>
+          <div class="d-flex justify-content-end">
+            <a class="googleLoginLink" (click)="loginClicked('Google')">
+              <img class="userImg" src="/assets/google-login.svg" alt="google-icon">
+            </a>
+            <a class="googleLoginLink ml-2" (click)="loginClicked('Facebook')">
+              <img class="userImg" src="/assets/facebook-login.svg" alt="google-icon">
+            </a>
+          </div>
         </ng-template>
 
         <ng-template #loggedIn>
-          <div *ngIf="authService.user$ | async as user" class="user-bar d-flex" routerLinkActive="active" routerLink="/user-dashboard">
+          <div *ngIf="authService.user$ | async as user" class="user-bar d-flex justify-content-between" routerLinkActive="active" routerLink="/user-dashboard">
             <a class="nav-link">{{user.displayName}}</a>
             <img class="userImg rounded-circle" [src]="user.photoURL" alt="profile-picture">
           </div>
         </ng-template>
       </li>
     </ul>
+  </div>
 </nav>
