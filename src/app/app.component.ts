@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {animate, group, query, style, transition, trigger} from '@angular/animations';
+import {PwaService} from '@shared/services/pwa/pwa.service';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,7 @@ import {animate, group, query, style, transition, trigger} from '@angular/animat
 })
 export class AppComponent {
 
-  constructor() {
+  constructor(public pwaService: PwaService) {
   }
 
 

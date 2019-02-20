@@ -2,3 +2,4 @@
 <div class="router-div" [@routerTransition]="getState(out)">
   <router-outlet #out="outlet"></router-outlet>
 </div>
+<app-footer *ngIf="pwaService.promptEvent && !pwaService.dismissed"></app-footer>

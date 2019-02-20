@@ -12,11 +12,15 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import { NavBarComponent } from '@components/nav-bar/nav-bar.component';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent
+    NavBarComponent,
+    FooterComponent
   ],
   imports: [
       BrowserModule,
@@ -27,7 +31,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
       AngularFirestoreModule,
       AngularFireAuthModule,
       AngularFireDatabaseModule,
-      BrowserAnimationsModule
+      BrowserAnimationsModule,
+      ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

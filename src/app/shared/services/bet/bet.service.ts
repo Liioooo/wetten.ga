@@ -63,12 +63,11 @@ export class BetService implements OnDestroy {
         const currentBetDoc = await transaction.get(this.betDoc.ref);
         if (!currentBetDoc.exists) {
           await transaction.update(this.betDoc.ref, {[bet]: this.betAmount, user: this.authService.userRef.ref});
-          return this.betAmount;
         } else {
           const newAmount = this.betAmount + currentBetDoc.data()[bet];
           await transaction.update(this.betDoc.ref, {[bet]: newAmount, user: this.authService.userRef.ref});
-          return newAmount;
         }
+        return this.betAmount;
       });
       this.toastrService.success(`Added ${amount} on ${bet.replace('Amount', '')} bet`, 'Nice!');
   }
