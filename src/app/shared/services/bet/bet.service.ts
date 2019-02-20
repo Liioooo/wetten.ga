@@ -3,7 +3,7 @@ import {AuthService} from '../auth/auth.service';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {combineLatest, Observable, ObservableInput, of, Subscription} from 'rxjs';
 import {Bet} from '../../models/Bet';
-import {map, switchMap} from 'rxjs/operators';
+import {map, mergeMap, switchMap, tap} from 'rxjs/operators';
 import {joinCollections} from '../../rxjs-operators/joinCollections';
 
 @Injectable({
@@ -32,6 +32,19 @@ export class BetService implements OnDestroy {
 
   get bets(): Observable<Bet> {
     return this._bets;
+  }
+
+  get currentBalance(): Observable<number> {
+      return this.bets.pipe(
+          mergeMap(bets => {
+            return this.authService.user$.pipe(
+                map(user => user.amount),
+                map(balance => {
+                  return balance - bets.blackAmount - bets.greenAmount - bets.redAmount;
+                })
+            );
+          })
+      );
   }
 
   get allBets(): Observable<Bet[]> {

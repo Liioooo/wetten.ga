@@ -13,14 +13,11 @@ export class BetAmountChooserComponent implements OnInit, OnDestroy {
   public balance = 0;
   private balanceSubscription: Subscription;
 
-  constructor(
-    private authService: AuthService,
-    public betService: BetService
-  ) { }
+  constructor(public betService: BetService) { }
 
   ngOnInit() {
-    this.balanceSubscription = this.authService.user$.subscribe(user => {
-        this.balance = user.amount;
+    this.balanceSubscription = this.betService.currentBalance.subscribe(balance => {
+        this.balance = balance;
     });
   }
 

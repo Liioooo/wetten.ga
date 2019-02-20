@@ -28,7 +28,7 @@ export class SetBetsComponent implements OnInit {
     this.bets = this.betService.allBets.pipe(
         map(bets => bets.filter(bet => (bet[this.typeKey] !== undefined && bet[this.typeKey] !== 0))),
         map(bets => bets.map(bet => {
-          return {name: bet.user['displayName'], amount: bet[this.typeKey]}
+          return {name: bet.user['displayName'], amount: bet[this.typeKey]};
         }))
     );
   }
