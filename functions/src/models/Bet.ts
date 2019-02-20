@@ -7,11 +7,3 @@ export interface Bet {
   blackAmount?: number;
   user: DocumentReference;
 }
-
-export class BetObj implements Bet {
-  blackAmount = 0;
-  greenAmount = 0;
-  redAmount = 0;
-  constructor(public user: DocumentReference) {
-  }
-}

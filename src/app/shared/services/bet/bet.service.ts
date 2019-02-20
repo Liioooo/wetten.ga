@@ -3,8 +3,10 @@ import {AuthService} from '../auth/auth.service';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {combineLatest, Observable, ObservableInput, of, Subscription} from 'rxjs';
 import {Bet} from '../../models/Bet';
-import {map, mergeMap, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {joinCollections} from '../../rxjs-operators/joinCollections';
+import {NotificationService} from '../notification/notification.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -16,35 +18,25 @@ export class BetService implements OnDestroy {
   private betDoc: AngularFirestoreDocument<any>;
   private subscription: Subscription;
   private _bets: Observable<Bet>;
+  private _userMoney: number;
   
   constructor(
     private authService: AuthService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private toastrService: ToastrService
   ) {
     this.subscription = this.authService.user$.subscribe(user => {
       if (user) {
           const doc = this.afs.doc<Bet>(`bets/${user.uid}`);
           this.betDoc = doc;
           this._bets = doc.valueChanges();
+          this._userMoney = user.amount;
       }
     });
   }
 
   get bets(): Observable<Bet> {
     return this._bets;
-  }
-
-  get currentBalance(): Observable<number> {
-      return this.bets.pipe(
-          mergeMap(bets => {
-            return this.authService.user$.pipe(
-                map(user => user.amount),
-                map(balance => {
-                  return balance - bets.blackAmount - bets.greenAmount - bets.redAmount;
-                })
-            );
-          })
-      );
   }
 
   get allBets(): Observable<Bet[]> {
@@ -55,17 +47,18 @@ export class BetService implements OnDestroy {
   }
 
   async setBet(bet: string) {
-    if (this.betAmount > -100) {
-      this.afs.firestore.runTransaction(async transaction => {
+      const amount = await this.afs.firestore.runTransaction(async transaction => {
         const currentBetDoc = await transaction.get(this.betDoc.ref);
         if (!currentBetDoc.exists) {
           await transaction.update(this.betDoc.ref, {[bet]: this.betAmount, user: this.authService.userRef.ref});
+          return this.betAmount;
         } else {
-          await transaction.update(this.betDoc.ref, {[bet]: this.betAmount + currentBetDoc.data()[bet], user: this.authService.userRef.ref});
+          const newAmount = this.betAmount + currentBetDoc.data()[bet];
+          await transaction.update(this.betDoc.ref, {[bet]: newAmount, user: this.authService.userRef.ref});
+          return newAmount;
         }
-
       });
-    }
+      this.toastrService.success(`Added ${amount} to ${bet.replace('Amount', '')} bet`, 'Nice!');
   }
 
   /*async deleteBet() {

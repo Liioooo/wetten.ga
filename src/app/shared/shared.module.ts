@@ -10,7 +10,11 @@ import {ToastrModule} from 'ngx-toastr';
   declarations: [],
   imports: [
       CommonModule,
-      ToastrModule.forRoot()
+      ToastrModule.forRoot({
+        preventDuplicates: true,
+        closeButton: true,
+        extendedTimeOut: 3000
+        })
   ],
   exports: []
 })

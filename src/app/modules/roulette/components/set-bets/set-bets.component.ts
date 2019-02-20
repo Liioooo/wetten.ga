@@ -3,6 +3,7 @@ import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {BetService} from '../../../../shared/services/bet/bet.service';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-set-bets',
@@ -20,7 +21,8 @@ export class SetBetsComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    public betService: BetService
+    public betService: BetService,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit() {
@@ -50,4 +52,13 @@ export class SetBetsComponent implements OnInit {
     return key;
   }
 
+  placeBet(type: string) {
+    if (this.betService.betAmount > 0) {
+      this.betService.setBet(type);
+    } else if (false) {
+
+    } else {
+      this.toastrService.error('Please choose a valid amount', 'Amount missing');
+    }
+  }
 }

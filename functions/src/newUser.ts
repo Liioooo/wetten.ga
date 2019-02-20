@@ -3,7 +3,6 @@ import * as sendgridemail from '@sendgrid/mail';
 import {SENDGRID_API_KEY} from './environment';
 import {User} from './models/User';
 import * as admin from 'firebase-admin';
-import {BetObj} from './models/Bet';
 
 const db = admin.firestore();
 sendgridemail.setApiKey(SENDGRID_API_KEY);
@@ -19,7 +18,12 @@ export const newUser = functions.firestore
     }, {merge: true});
 
     const ref = await db.doc(`bets/${userData.uid}`);
-    await ref.set(new BetObj(event.ref), {merge: true});
+    await ref.set({
+      redAmount: 0,
+      blackAmount: 0,
+      greenAmount: 0,
+      user: event.ref
+    }, {merge: true});
 
     try {
       return sendgridemail.send({

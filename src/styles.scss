@@ -3,7 +3,32 @@
 @import "~bootswatch/dist/flatly/bootswatch";
 @import "~animate.css/animate.css";
 @import '~ngx-toastr/toastr.css';
+@import '~ngx-toastr/toastr-bs4-alert';
 
 body {
   overflow-x: hidden;
+}
+
+#toast-container > div {
+  opacity:1;
+}
+
+.toast-error {
+  background-color: #e74c3c;
+}
+
+.toast-success {
+  background-color: #27ae60;
+}
+
+.toast-warning {
+  background-color: #f39c12;
+}
+
+.toast-info {
+  background-color: #2980b9;
+}
+
+.toast{
+  border: 0;
 }
