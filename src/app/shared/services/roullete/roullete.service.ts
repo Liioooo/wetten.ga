@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {interval, Observable, Subject} from 'rxjs';
 import {Roll} from '../../models/Roll';
-import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
+import {debounce, distinctUntilChanged, map, switchMap} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
@@ -35,7 +35,7 @@ export class RouletteService {
 
     public get rollHistoryWithAnimationDelay$(): Observable<Roll[]> {
         return this._rollHistory$.pipe(
-            debounceWithoutFirst(() => this._animationFinished),
+            debounce(() => this._animationFinished),
         );
     }
 
