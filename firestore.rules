@@ -3,7 +3,6 @@ service cloud.firestore {
 
 		match /bets/{userId} {
     	allow read;
-      allow create: if isOwner(userId) && !betDocExists() && validateAmounts();
       allow update: if isOwner(userId) && validateAmounts();
     }
 
