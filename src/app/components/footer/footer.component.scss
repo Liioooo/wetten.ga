@@ -1,0 +1,15 @@
+.main {
+  position: fixed;
+  bottom: 0;
+  background-color: white;
+  width: 80%;
+
+  button {
+    width: 8rem;
+  }
+}
+
+:host {
+  display: flex;
+  justify-content: center;
+}

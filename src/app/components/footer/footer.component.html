@@ -1,0 +1,7 @@
+<div class="d-flex flex-column animated slideInUp main border rounded p-1 mb-1">
+  <p class="text-center mt-2">Do you want to install our app on the homescreen?</p>
+  <div class="d-flex flex-row justify-content-around mb-2">
+    <button type="button" (click)="pwaService.installPwa()" class="btn btn-success">Yes!</button>
+    <button type="button" (click)="pwaService.dismissed = true" class="btn btn-danger">No :(</button>
+  </div>
+</div>
