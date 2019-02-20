@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {RouletteService} from '../../../../shared/services/roullete/roullete.service';
-import {Roll} from '../../../../shared/models/Roll';
+import {RouletteService} from '@shared/services/roullete/roullete.service';
+import {Roll} from '@shared/models/Roll';
 import {Observable} from 'rxjs';
 
 @Component({

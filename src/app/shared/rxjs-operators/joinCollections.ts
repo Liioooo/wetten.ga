@@ -1,5 +1,5 @@
 import {combineLatest, Observable, of} from 'rxjs';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
 
 export const joinCollections = (keyInCollectionA: string, keyInCollectionB: string, collectionToJoin: string, afs: AngularFirestore, toAssignJoinedObject?: string) => (source: Observable<any>) => {

@@ -1,7 +1,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "paths": {
+      "@shared/*": ["app/shared/*"],
+      "@home/*": ["app/modules/home/*"],
+      "@roulette/*": ["app/modules/roulette/*"],
+      "@components/*": ["app/components/*"],
+      "@main/*" : ["*"]
+    },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,

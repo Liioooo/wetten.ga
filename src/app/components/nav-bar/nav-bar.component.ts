@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../shared/services/auth/auth.service';
-import {projectName} from '../../../environments/project-name';
+import {AuthService} from '@shared/services/auth/auth.service';
+import {projectName} from '@main/environments/project-name';
 
 @Component({
   selector: 'app-nav-bar',

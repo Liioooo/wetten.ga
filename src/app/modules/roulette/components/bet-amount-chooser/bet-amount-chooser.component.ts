@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../../../../shared/services/auth/auth.service';
 import {Subscription} from 'rxjs';
-import {BetService} from '../../../../shared/services/bet/bet.service';
+import {BetService} from '@shared/services/bet/bet.service';
 
 @Component({
   selector: 'app-bet-amount-chooser',

@@ -70,7 +70,7 @@ export class BetService implements OnDestroy {
           return newAmount;
         }
       });
-      this.toastrService.success(`Added ${amount} to ${bet.replace('Amount', '')} bet`, 'Nice!');
+      this.toastrService.success(`Added ${amount} on ${bet.replace('Amount', '')} bet`, 'Nice!');
   }
 
   /*async deleteBet() {

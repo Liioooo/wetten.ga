@@ -5,8 +5,8 @@ import {Message} from '../models/Message';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
-import {AuthService} from '../../../shared/services/auth/auth.service';
-import {joinCollections} from '../../../shared/rxjs-operators/joinCollections';
+import {AuthService} from '@shared/services/auth/auth.service';
+import {joinCollections} from '@shared/rxjs-operators/joinCollections';
 
 @Injectable({
   providedIn: 'root'

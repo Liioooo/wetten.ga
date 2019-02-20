@@ -2,8 +2,8 @@ import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, View
 import {fromEvent, Subscription, timer} from 'rxjs';
 import rollRanges from './roll-ranges';
 import {map, take} from 'rxjs/operators';
-import {RouletteService} from '../../../../shared/services/roullete/roullete.service';
-import {Roll} from '../../../../shared/models/Roll';
+import {RouletteService} from '@shared/services/roullete/roullete.service';
+import {Roll} from '@shared/models/Roll';
 
 @Component({
   selector: 'app-roulette-roller',

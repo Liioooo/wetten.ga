@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth/auth.service';
-import {BetService} from '../../../../shared/services/bet/bet.service';
+import {BetService} from '@shared/services/bet/bet.service';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';

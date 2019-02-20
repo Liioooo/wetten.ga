@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../../../shared/services/auth/auth.service';
+import {AuthService} from '@shared/services/auth/auth.service';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
 import {Title} from '@angular/platform-browser';
-import {projectName} from '../../../../../environments/project-name';
+import {projectName} from '@main/environments/project-name';
 
 @Component({
   selector: 'app-dashboard',

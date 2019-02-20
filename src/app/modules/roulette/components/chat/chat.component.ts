@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from '../../../../shared/services/auth/auth.service';
+import {AuthService} from '@shared/services/auth/auth.service';
 import {ChatService} from '../../services/chat.service';
 import {Message} from '../../models/Message';
 import {delay, tap} from 'rxjs/operators';

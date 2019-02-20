@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {projectName} from '../../../../../environments/project-name';
+import {projectName} from '@main/environments/project-name';
 
 @Component({
   selector: 'app-home',
