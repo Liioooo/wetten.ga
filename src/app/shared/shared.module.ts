@@ -13,7 +13,8 @@ import {ToastrModule} from 'ngx-toastr';
       ToastrModule.forRoot({
         preventDuplicates: true,
         closeButton: true,
-        extendedTimeOut: 3000
+        extendedTimeOut: 3000,
+        positionClass: 'toast-bottom-left'
         })
   ],
   exports: []
