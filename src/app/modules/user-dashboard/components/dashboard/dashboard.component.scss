@@ -1,7 +1,18 @@
+@import "../../../../mixins";
+
 .user {
   display: grid;
   grid-template-columns: 70px auto 100px;
   align-items: center;
+
+  @include mediaQuery(567px, max) {
+    grid-template-columns: 70px auto;
+
+    button {
+      margin-top: 1rem;
+      grid-column: 1/ span 2;
+    }
+  }
 
   img {
     width: 70px;

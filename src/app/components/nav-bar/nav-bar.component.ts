@@ -9,7 +9,7 @@ import {projectName} from '@main/environments/project-name';
 export class NavBarComponent implements OnInit {
 
   public projectName = projectName;
-  public collapsed = false;
+  public collapsed = true;
 
   constructor(
     public authService: AuthService

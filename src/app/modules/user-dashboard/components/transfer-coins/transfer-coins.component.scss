@@ -1,0 +1,15 @@
+@import "../../../../mixins";
+
+.arrow-img {
+  position: relative;
+  bottom: 16.25px;
+  width: 60px;
+  height: 36.5px;
+
+  @include mediaQuery(576px, max) {
+    transform: rotate(90deg);
+    bottom: 0;
+    width: 35px;
+    height: 36.5px;
+  }
+}
