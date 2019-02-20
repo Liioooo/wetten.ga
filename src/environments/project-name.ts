@@ -1,1 +1,1 @@
-export const projectName = 'Lio Roulette';
+export const projectName = 'wetten.ga';

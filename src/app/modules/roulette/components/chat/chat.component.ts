@@ -33,7 +33,7 @@ export class ChatComponent implements OnInit, OnDestroy {
             tap(messages => this.messages = messages),
             delay(100)
         ).subscribe(messages => {
-            if (this.lastSent === messages[messages.length - 1].message || this.firstLoad) {
+            if ((messages[messages.length - 1] && this.lastSent === messages[messages.length - 1].message) || this.firstLoad) {
                 this.lastSent = '';
                 this.scrollElement.nativeElement.scrollTo(0, this.scrollElement.nativeElement.scrollHeight);
                 this.firstLoad = false;

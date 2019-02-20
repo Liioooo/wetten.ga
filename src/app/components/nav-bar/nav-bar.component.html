@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand navbar-dark bg-primary">
-  <a class="navbar-brand" routerLink="/home">Lio Roulette</a>
+  <a class="navbar-brand" routerLink="/home">{{projectName}}</a>
 
     <ul class="navbar-nav">
       <li class="nav-item" routerLinkActive="active" >
@@ -19,7 +19,7 @@
           <a class="googleLoginLink" (click)="loginClicked('Google')">
             <img class="userImg" src="/assets/google-login.svg" alt="google-icon">
           </a>
-          <a class="googleLoginLink" (click)="loginClicked('Facebook')">
+          <a class="googleLoginLink ml-2" (click)="loginClicked('Facebook')">
             <img class="userImg" src="/assets/facebook-login.svg" alt="google-icon">
           </a>
         </ng-template>
