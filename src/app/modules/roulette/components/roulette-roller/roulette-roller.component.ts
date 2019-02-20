@@ -37,6 +37,7 @@ export class RouletteRollerComponent implements AfterViewInit, OnDestroy {
       this.latestRollSubscription = this.rouletteService.latestRoll$.subscribe((roll: Roll) => {
           if (firstTimeRollSet) {
               this.setRolled(roll.rolledNumber);
+              this.rouletteService.finishedAnimation();
               firstTimeRollSet = false;
           } else {
               this.rollTo(roll.rolledNumber);
