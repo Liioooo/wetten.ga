@@ -77,7 +77,7 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
           if (data === undefined) {return;}
 
           amount += data.amount;
-          if(amount === 0) {
+          if(amount !== 0) {
             transaction.update(betData.user, { amount });
           }
           transaction.update(bet.ref, {redAmount: 0, blackAmount: 0, greenAmount: 0});

@@ -61,7 +61,7 @@ export class TransferCoinsComponent implements OnInit, OnDestroy {
     this.authService.transferCoins(amountToTransfer, transferTo)
         .then(() => {
             this.transferCoinsForm.reset();
-            this.toastrService.success(`Transfered ${amountToTransfer} coins to ${transferTo}`, 'Nice!')
+            this.toastrService.success(`Transfered ${amountToTransfer} coins to ${transferTo}`, 'Nice!');
         })
         .catch(error => {
             if (error.message === 'noUser') {
