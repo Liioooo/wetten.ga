@@ -33,7 +33,7 @@ export class BetAmountChooserComponent implements OnInit, OnDestroy {
   }
 
   public multiply(toMultipy: number) {
-    this.betService.betAmount *= toMultipy;
+    this.betService.betAmount = Math.round(this.betService.betAmount * toMultipy * 100) / 100;
   }
 
   public hasEnough(toAdd: number): boolean {

@@ -18,7 +18,7 @@
         </div>
     </div>
     <form [formGroup]="chatForm" class="input-group">
-        <input type="text" class="form-control" name="chatMessage" formControlName="chatMessage" (keydown)="checkEnter($event)" placeholder="Your Message"  [disabled]="!(authService.user$ | async)">
+        <input type="text" class="form-control" name="chatMessage" formControlName="chatMessage" (keydown)="checkEnter($event)" placeholder="Your Message">
         <div class="input-group-append">
             <button class="btn btn-primary" (keydown)="checkEnter($event)" [disabled]="!(authService.user$ | async) || chatForm.invalid" (click)="sendMessage()">Send</button>
         </div>

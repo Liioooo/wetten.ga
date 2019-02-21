@@ -5,25 +5,30 @@ import {AuthGuard} from '@shared/guards/auth/auth.guard';
 
 const routes: Routes = [
     {
-      path: '',
-      redirectTo: '/home',
-      pathMatch: 'full'
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
     },
     {
-      path: 'home',
-      children: HOME_ROUTES,
-      data: {type: 'home'}
+        path: 'home',
+        children: HOME_ROUTES,
+        data: {type: 'home'}
     },
     {
-      path: 'roulette',
-      loadChildren: './modules/roulette/roulette.module#RouletteModule',
-      data: {type: 'roulette'}
+        path: 'login',
+        loadChildren: './modules/login/login.module#LoginModule',
+        data: {type: 'dashboard'}
     },
     {
-      path: 'user-dashboard',
-      loadChildren: './modules/user-dashboard/user-dashboard.module#UserDashboardModule',
-      canActivate: [AuthGuard],
-      data: {type: 'dashboard'}
+        path: 'roulette',
+        loadChildren: './modules/roulette/roulette.module#RouletteModule',
+        data: {type: 'roulette'}
+    },
+    {
+        path: 'user-dashboard',
+        loadChildren: './modules/user-dashboard/user-dashboard.module#UserDashboardModule',
+        canActivate: [AuthGuard],
+        data: {type: 'dashboard'}
     }
 ];
 

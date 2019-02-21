@@ -6,6 +6,7 @@
       "@shared/*": ["app/shared/*"],
       "@home/*": ["app/modules/home/*"],
       "@roulette/*": ["app/modules/roulette/*"],
+      "@login/*": ["app/modules/login/*"],
       "@components/*": ["app/components/*"],
       "@main/*" : ["*"]
     },

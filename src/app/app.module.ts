@@ -15,7 +15,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { FooterComponent } from '@components/footer/footer.component';
-import {NgbCollapseModule, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [

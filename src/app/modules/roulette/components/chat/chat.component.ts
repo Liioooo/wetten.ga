@@ -5,7 +5,7 @@ import {Message} from '../../models/Message';
 import {Subscription} from 'rxjs';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
-import {delay} from 'rxjs/operators';
+import {delay, distinctUntilChanged, map} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -20,6 +20,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     public messages: Message[];
     private messageSubscription: Subscription;
     private newMessageSubscription: Subscription;
+    private loggedInSubscription: Subscription;
     private chatForm: FormGroup;
     private lastTimeSent = 0;
 
@@ -29,6 +30,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.chatForm = this.formBuilder.group({
            'chatMessage': ['', [Validators.required, Validators.maxLength(500)]]
+        });
+        this.loggedInSubscription = this.authService.user$.pipe(
+            map(user => user !== null),
+            distinctUntilChanged()
+        ).subscribe(loggedIn => {
+            if (loggedIn) {
+                this.chatForm.controls.chatMessage.enable();
+            } else {
+                this.chatForm.controls.chatMessage.disable();
+            }
         });
 
         this.chatService.getNextMessages();
@@ -76,5 +87,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
       this.messageSubscription.unsubscribe();
       this.newMessageSubscription.unsubscribe();
+      this.loggedInSubscription.unsubscribe();
     }
 }
