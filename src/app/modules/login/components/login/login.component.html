@@ -1,3 +1,42 @@
-<p>
-  login works!
-</p>
+<div class="m-auto pt-3 login-container">
+  <h3>Login</h3>
+  <form class="mb-2">
+    <div class="form-group">
+      <label for="loginMail">Email address</label>
+      <input type="email" class="form-control" name="loginMail" id="loginMail" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label for="loginPassword">Password</label>
+      <input type="password" class="form-control" name="loginPassword" id="loginPassword" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-secondary">Login</button>
+  </form>
+
+  <h4>Or sign in with one of these services</h4>
+  <div class="login-with-container p-2 bg-light d-flex align-items-center mb-2">
+    <img src="assets/google-login.svg">
+    <h4 class="mb-0 ml-4">Google</h4>
+  </div>
+  <div class="login-with-container p-2 bg-light d-flex align-items-center mb-2">
+    <img src="assets/facebook-login.svg">
+    <h4 class="mb-0 ml-4">Facebook</h4>
+  </div>
+  <div class="login-with-container p-2 bg-light d-flex align-items-center mb-2">
+    <img src="assets/twitter-login.svg">
+    <h4 class="mb-0 ml-4">Twitter</h4>
+  </div>
+
+  <h3>Register</h3>
+  <form class="mb-2">
+    <div class="form-group">
+      <label for="registerMail">Email address</label>
+      <input type="email" class="form-control" name="loginMail" id="registerMail" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label for="registerPassword">Password</label>
+      <input type="password" class="form-control" name="loginPassword" id="registerPassword" placeholder="Password">
+      <input type="password" class="form-control mt-2" name="loginPassword" id="registerPasswordRepeat" placeholder="Repeat Password">
+    </div>
+    <button type="submit" class="btn btn-secondary">Register</button>
+  </form>
+</div>

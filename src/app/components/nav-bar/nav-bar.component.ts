@@ -11,14 +11,8 @@ export class NavBarComponent implements OnInit {
   public projectName = projectName;
   public collapsed = true;
 
-  constructor(
-    public authService: AuthService
-    ) { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit() {
-  }
-
-  public loginClicked(type: string) {
-      this.authService.signIn(type);
   }
 }
