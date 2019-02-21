@@ -12,7 +12,6 @@ import {PwaService} from '@shared/services/pwa/pwa.service';
   imports: [
       CommonModule,
       ToastrModule.forRoot({
-        preventDuplicates: true,
         closeButton: true,
         extendedTimeOut: 3000,
         positionClass: 'toast-bottom-left'

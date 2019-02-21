@@ -41,9 +41,9 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
   ).docs;
 
   const tempBets = [...betsRed, ...betsGreen, ...betsBlack];
-  console.log("tempBets Length: "+tempBets.length)
   const bets: QueryDocumentSnapshot[] = [];
   for (let i = 0; i < tempBets.length; i++) {
+    console.log(tempBets[i].data());
     let included = false;
     for (let j = 0; j < bets.length; j++) {
       if(tempBets[i].isEqual(bets[j])) {
@@ -56,12 +56,13 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
     }
   }
     bets.forEach(bet => {
+      console.log(bet.data());
       const betData = bet.data() as Bet;
-      console.log(betData)
       const {redAmount = 0, greenAmount = 0, blackAmount = 0} = betData;
       db.runTransaction(transaction => transaction.get(betData.user)
         .then(userDoc => {
           if (!userDoc.exists) { return; }
+          console.log("doc exists")
 
           let amount = 0;
           if (newRoll.rolledNumber === 0) {
@@ -72,13 +73,13 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
             amount = blackAmount - redAmount - greenAmount;
           }
 
-          if (amount === 0) { return; }
-
           const data = userDoc.data();
           if (data === undefined) {return;}
 
           amount += data.amount;
-          transaction.update(betData.user, { amount });
+          if(amount !== 0) {
+            transaction.update(betData.user, { amount });
+          }
           transaction.update(bet.ref, {redAmount: 0, blackAmount: 0, greenAmount: 0});
         }))
         .catch(console.error);
