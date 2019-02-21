@@ -28,7 +28,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.chatForm = this.formBuilder.group({
-           'chatMessage': ['', [Validators.required, Validators.maxLength(10)]]
+           'chatMessage': ['', [Validators.required, Validators.maxLength(500)]]
         });
 
         this.chatService.getNextMessages();
@@ -49,7 +49,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     sendMessage() {
-      if (this.chatForm.invalid || Date.now() - this.lastTimeSent < 1000) {
+      if (this.chatForm.invalid || this.chatForm.controls.chatMessage.value.trim().length === 0 || Date.now() - this.lastTimeSent < 1000) {
           return;
       }
 
