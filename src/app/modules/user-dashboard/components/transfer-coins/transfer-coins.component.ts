@@ -26,7 +26,7 @@ export class TransferCoinsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.transferCoinsForm = this.formBuilder.group({
        'amountToTransfer': ['', [Validators.required, Validators.min(1)]],
-       'transferTo': ['', Validators.required]
+       'transferTo': ['', [Validators.required, Validators.email]]
     });
     this.balanceSubscription = this.authService.user$.pipe(
       map(user => user.amount)
@@ -44,6 +44,8 @@ export class TransferCoinsComponent implements OnInit, OnDestroy {
       } else if (this.transferCoinsForm.controls.transferTo.errors) {
         if (this.transferCoinsForm.controls.transferTo.errors.required) {
             this.toastrService.error('Receiver email is required!', 'Invalid Receiver');
+        } else if (this.transferCoinsForm.controls.transferTo.errors.email) {
+            this.toastrService.error('Receiver email is not a valid e-mail address!', 'Invalid Receiver');
         }
       }
       return;
@@ -52,7 +54,20 @@ export class TransferCoinsComponent implements OnInit, OnDestroy {
         return;
     }
 
-    // TODO: implement transfer + mail validation
+
+    const amountToTransfer = this.transferCoinsForm.controls.amountToTransfer.value;
+    const transferTo = this.transferCoinsForm.controls.transferTo.value;
+
+    this.authService.transferCoins(amountToTransfer, transferTo)
+        .then(() => this.toastrService.success(`Transfered ${amountToTransfer} coins to ${transferTo}`, 'Nice!'))
+        .catch(error => {
+            if (error.message === 'noUser') {
+                this.toastrService.error('Receiver email does not exist!', 'Invalid Receiver');
+            } else if (error.message === 'ownUser') {
+                this.toastrService.error('You can not transfer coins to your own account!', 'Invalid Receiver');
+            }
+        });
+
   }
 
   ngOnDestroy() {

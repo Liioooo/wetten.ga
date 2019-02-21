@@ -1,7 +1,11 @@
 service cloud.firestore {
   match /databases/{database}/documents {
 
-		match /bets/{userId} {
+    match /coinTransactions/{document=**} {
+        allow create: if isSignedIn();
+    }
+
+	match /bets/{userId} {
     	allow read;
       allow update: if isOwner(userId) && validateAmounts();
     }

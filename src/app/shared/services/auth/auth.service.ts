@@ -77,4 +77,28 @@ export class AuthService {
     return this._userRef.set(data as User, {merge: true});
   }
 
+  public async transferCoins(amount: number, toUserMail: string) {
+      const userTransferTo = await this.afs.collection<User>('users', ref => ref.where('email', '==', toUserMail)).valueChanges().pipe(
+          take(1),
+          map(users => users[0])
+      ).toPromise();
+
+      const user = await this.user$.pipe(
+          take(1)
+      ).toPromise();
+
+      if (userTransferTo === undefined) {
+         throw Error('noUser');
+      } else if (userTransferTo.uid === user.uid) {
+          throw Error('ownUser');
+      }
+
+      await this.afs.collection('coinTransactions').add({
+          amount,
+          from: this._userRef.ref,
+          to: this.afs.doc(`users/${userTransferTo.uid}`).ref
+      });
+      return 'success';
+  }
+
 }
