@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {animate, group, query, style, transition, trigger} from '@angular/animations';
 import {PwaService} from '@shared/services/pwa/pwa.service';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,13 @@ import {PwaService} from '@shared/services/pwa/pwa.service';
 })
 export class AppComponent {
 
-  constructor(public pwaService: PwaService) {
+  constructor(public pwaService: PwaService, private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        (<any>window).ga('set', 'page', event.urlAfterRedirects);
+        (<any>window).ga('send', 'pageview');
+      }
+    });
   }
 
 

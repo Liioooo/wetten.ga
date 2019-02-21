@@ -59,7 +59,10 @@ export class TransferCoinsComponent implements OnInit, OnDestroy {
     const transferTo = this.transferCoinsForm.controls.transferTo.value;
 
     this.authService.transferCoins(amountToTransfer, transferTo)
-        .then(() => this.toastrService.success(`Transfered ${amountToTransfer} coins to ${transferTo}`, 'Nice!'))
+        .then(() => {
+            this.transferCoinsForm.reset();
+            this.toastrService.success(`Transfered ${amountToTransfer} coins to ${transferTo}`, 'Nice!')
+        })
         .catch(error => {
             if (error.message === 'noUser') {
                 this.toastrService.error('Receiver email does not exist!', 'Invalid Receiver');
