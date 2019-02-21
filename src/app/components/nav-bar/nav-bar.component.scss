@@ -1,7 +1,30 @@
-.googleLoginLink {
+.login-link {
+
+  color: white;
+
+  &:focus {
+    outline: none;
+  }
 
   &:hover {
     cursor: pointer;
+    color: #18BC9C;
+
+    .login-img {
+      background-image: url("/assets/login-hover.svg");
+    }
+  }
+
+  .login-img {
+    background-image: url("/assets/login.svg");
+  }
+}
+
+.login-active {
+  color: #18BC9C;
+
+  .login-img {
+    background-image: url("/assets/login-hover.svg");
   }
 }
 

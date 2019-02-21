@@ -22,12 +22,10 @@
         <div *ngIf="authService.user$ | async; then loggedIn else notLoggedIn;"></div>
 
         <ng-template #notLoggedIn>
-          <div class="d-flex justify-content-end">
-            <a class="googleLoginLink" (click)="loginClicked('Google')">
-              <img class="userImg" src="/assets/google-login.svg" alt="google-icon">
-            </a>
-            <a class="googleLoginLink ml-2" (click)="loginClicked('Facebook')">
-              <img class="userImg" src="/assets/facebook-login.svg" alt="google-icon">
+          <div routerLink="/login" class="d-flex justify-content-end align-items-center login-link" routerLinkActive="login-active">
+            <p class="mb-0">Login / Register</p>
+            <a class="login-img userImg ml-2">
+              <!--<img class="userImg" src="/assets/login.svg" alt="google-icon">-->
             </a>
           </div>
         </ng-template>
