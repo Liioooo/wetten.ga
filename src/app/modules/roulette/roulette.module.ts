@@ -8,7 +8,7 @@ import {SharedModule} from '@shared/shared.module';
 import { RollHistoryComponent } from './components/roll-history/roll-history.component';
 import { ChatComponent } from './components/chat/chat.component';
 import {BetAmountChooserComponent} from './components/bet-amount-chooser/bet-amount-chooser.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SetBetsComponent} from './components/set-bets/set-bets.component';
 import {ChatService} from './services/chat/chat.service';
 
@@ -25,7 +25,8 @@ import {ChatService} from './services/chat/chat.service';
         CommonModule,
         RouletteRoutingModule,
         SharedModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [ChatService]
 })

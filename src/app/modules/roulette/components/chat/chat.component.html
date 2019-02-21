@@ -17,10 +17,13 @@
             <p class="mb-1 small" [ngClass]="{'sent-by-logged-in-name': message.wasSentByLoggedInUser}">{{message.userDetails.displayName}}</p>
         </div>
     </div>
-    <div class="input-group">
-        <input type="text" class="form-control" (keydown)="checkEnter($event)" placeholder="Your Message" [(ngModel)]="currentlyTyped" [disabled]="!(authService.user$ | async)">
+    <form [formGroup]="chatForm" class="input-group">
+        <input type="text" class="form-control" name="chatMessage" formControlName="chatMessage" (keydown)="checkEnter($event)" placeholder="Your Message"  [disabled]="!(authService.user$ | async)">
         <div class="input-group-append">
-            <button class="btn btn-primary" (keydown)="checkEnter($event)" [disabled]="!(authService.user$ | async) || currentlyTyped.length === 0" (click)="sendMessage()">Send</button>
+            <button class="btn btn-primary" (keydown)="checkEnter($event)" [disabled]="!(authService.user$ | async) || chatForm.invalid" (click)="sendMessage()">Send</button>
         </div>
-    </div>
+        <div *ngIf="chatForm.controls.chatMessage.errors && chatForm.controls.chatMessage.errors.maxlength" class="invalid-feedback d-block">
+            Message is too long!
+        </div>
+    </form>
 </div>

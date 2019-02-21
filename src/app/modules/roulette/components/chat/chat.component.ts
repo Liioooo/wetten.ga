@@ -6,6 +6,7 @@ import {Subscription} from 'rxjs';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
 import {delay} from 'rxjs/operators';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
@@ -17,14 +18,19 @@ export class ChatComponent implements OnInit, OnDestroy {
     @ViewChild('scrollElement') scrollElement;
 
     public messages: Message[];
-    public currentlyTyped = '';
     private messageSubscription: Subscription;
     private newMessageSubscription: Subscription;
+    private chatForm: FormGroup;
+    private lastTimeSent = 0;
 
-    constructor(public authService: AuthService, public chatService: ChatService) {
+    constructor(public authService: AuthService, public chatService: ChatService, private formBuilder: FormBuilder) {
     }
 
     ngOnInit() {
+        this.chatForm = this.formBuilder.group({
+           'chatMessage': ['', [Validators.required, Validators.maxLength(10)]]
+        });
+
         this.chatService.getNextMessages();
         this.messageSubscription = this.chatService.getMessages().subscribe(messages => {
             this.messages = messages;
@@ -43,12 +49,17 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     sendMessage() {
-      this.chatService.sendMessage(this.currentlyTyped);
-      this.currentlyTyped = '';
+      if (this.chatForm.invalid || Date.now() - this.lastTimeSent < 1000) {
+          return;
+      }
+
+      this.lastTimeSent = Date.now();
+      this.chatService.sendMessage(this.chatForm.controls.chatMessage.value);
+      this.chatForm.reset();
     }
 
     checkEnter({keyCode}: KeyboardEvent) {
-      if (keyCode === 13 && this.currentlyTyped.length !== 0) {
+      if (keyCode === 13) {
         this.sendMessage();
       }
     }
