@@ -1,0 +1,11 @@
+@import "../../../../mixins";
+@import "~bootswatch/dist/flatly/variables";
+
+.login-container {
+  width: 95%;
+
+  @include mediaQuery(450px, min) {
+    width: 400px;
+  }
+
+}

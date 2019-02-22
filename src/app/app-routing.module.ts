@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import {Routes, RouterModule, PreloadAllModules} from '@angular/router';
 import {HOME_ROUTES} from '@home/home.module';
 import {AuthGuard} from '@shared/guards/auth/auth.guard';
+import {NotAuthGuard} from '@shared/guards/not-auth/not-auth.guard';
 
 const routes: Routes = [
     {
@@ -17,6 +18,7 @@ const routes: Routes = [
     {
         path: 'login',
         loadChildren: './modules/login/login.module#LoginModule',
+        canActivate: [NotAuthGuard],
         data: {type: 'dashboard'}
     },
     {

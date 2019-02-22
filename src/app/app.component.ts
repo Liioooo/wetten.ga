@@ -9,7 +9,7 @@ import {NavigationEnd, Router} from '@angular/router';
   styleUrls: ['./app.component.scss'],
   animations: [
     trigger('routerTransition', [
-      transition('roulette => home, dashboard => roulette, dashboard => home', [
+      transition('roulette => home, dashboard => roulette, dashboard => home, loginLogin => home, loginLogin => roulette, loginRegister => home, loginRegister => roulette', [
         style({ height: '!' }),
 
         query(':enter, :leave', style({ position: 'absolute', left: 0, right: 0 })),
@@ -23,7 +23,7 @@ import {NavigationEnd, Router} from '@angular/router';
           query(':enter', animate('0.3s cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)' }))),
         ])
       ]),
-      transition('home  => roulette, roulette => dashboard, home => dashboard', [
+      transition('home  => roulette, roulette => dashboard, home => dashboard, home => loginLogin, roulette => loginLogin', [
         style({ height: '!' }),
 
         query(':enter, :leave', style({ position: 'absolute', left: 0, right: 0 })),
@@ -37,6 +37,18 @@ import {NavigationEnd, Router} from '@angular/router';
           query(':enter', animate('0.3s cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)' }))),
         ])
       ]),
+      transition('loginLogin <=> loginRegister', [
+        query(':enter, :leave', style({ position: 'absolute', left: 0, right: 0, opacity: 1 })),
+        group([
+          query(':enter', [
+            style({ opacity: 0 }),
+            animate('200ms ease-in-out', style({ opacity: 1 }))
+          ]),
+          query(':leave', [
+            style({ opacity: 1 }),
+            animate('200ms ease-in-out', style({ opacity: 0 }))]),
+        ])
+      ])
     ])
   ]
 })

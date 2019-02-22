@@ -5,6 +5,7 @@ import {AuthGuard} from './guards/auth/auth.guard';
 import {RouletteService} from './services/roullete/roullete.service';
 import {ToastrModule} from 'ngx-toastr';
 import {PwaService} from '@shared/services/pwa/pwa.service';
+import {NotAuthGuard} from '@shared/guards/not-auth/not-auth.guard';
 
 
 @NgModule({
@@ -23,7 +24,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [AuthService, AuthGuard, RouletteService, PwaService]
+      providers: [AuthService, AuthGuard, NotAuthGuard, RouletteService, PwaService]
     };
   }
 }

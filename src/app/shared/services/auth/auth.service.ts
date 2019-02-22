@@ -42,10 +42,19 @@ export class AuthService {
       const provider = new auth[`${type}AuthProvider`]();
       try {
         const credential = await this.fireAuth.auth.signInWithPopup(provider);
+        this.router.navigate(['/home']);
         return this.updateUserData(credential);
       } catch (e) {
         console.error(e);
       }
+  }
+
+  public signInEmail(email: string, password: string) {
+
+  }
+
+  public signUp(email: string, password: string) {
+
   }
 
   async signOut() {
