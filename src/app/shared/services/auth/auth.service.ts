@@ -63,8 +63,10 @@ export class AuthService {
   }
 
   private updateUserData(credentials) {
-    const {uid, displayName, photoURL, email, phoneNumber} = credentials.user;
-    const {gender, last_name, first_name, family_name = last_name, given_name = first_name} = credentials.additionalUserInfo.profile;
+    const {uid, displayName, photoURL, phoneNumber} = credentials.user;
+    const {gender, last_name, first_name, family_name = last_name, given_name = first_name, location} = credentials.additionalUserInfo.profile;
+    const email = credentials.user.email ? credentials.user.email : credentials.additionalUserInfo.profile.email;
+
     this._userRef = this.afs.doc(`users/${uid}`);
 
     const data = {
@@ -75,7 +77,8 @@ export class AuthService {
           family_name,
           given_name,
           gender,
-          phoneNumber
+          phoneNumber,
+          location
       };
 
     for (const key in data) {

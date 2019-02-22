@@ -12,4 +12,5 @@ export interface User {
   given_name?: string;
   gender?: string;
   phoneNumber?: string;
+  location?: string;
 }
