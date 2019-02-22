@@ -8,6 +8,7 @@ import {distinctUntilChanged, first, map, switchMap, take, tap} from 'rxjs/opera
 import { auth } from 'firebase/app';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,12 @@ export class AuthService {
   private readonly _user$: Observable<User>;
   private _userRef: AngularFirestoreDocument<User>;
 
-  constructor(private fireAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) {
+  constructor(
+      private fireAuth: AngularFireAuth,
+      private afs: AngularFirestore,
+      private router: Router,
+      private toastrService: ToastrService
+  ) {
       this._user$ = this.fireAuth.authState.pipe(
           switchMap(user => {
               if (user) {
@@ -45,11 +51,14 @@ export class AuthService {
         this.router.navigate(['/home']);
         return this.updateUserData(credential);
       } catch (e) {
+        if (e.code = 'auth/account-exists-with-different-credential') {
+            this.toastrService.error('An account with this email address is already registered!', 'Login Error');
+        }
         console.error(e);
       }
   }
 
-  public signInEmail(email: string, password: string) {
+  public signInEmail(email: string, password: string, name: string) {
 
   }
 

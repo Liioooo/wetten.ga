@@ -1,14 +1,22 @@
 <div class="w-100">
   <div class="m-auto pt-3 login-container">
     <h3>Login</h3>
-    <form class="mb-4">
+    <form [formGroup]="loginFrom" class="mb-4" (submit)="loginEmailClicked()">
       <div class="form-group">
         <label for="loginMail">Email address</label>
-        <input type="email" class="form-control" name="loginMail" id="loginMail" placeholder="Enter email" autocomplete="username">
+        <input type="email" class="form-control" name="loginMail" id="loginMail" placeholder="Enter email" autocomplete="username" formControlName="loginMail" [ngClass]="{'is-invalid': hasSubmitted && loginFrom.controls.loginMail.errors}">
+        <div *ngIf="hasSubmitted && loginFrom.controls.loginMail.errors" class="invalid-feedback d-block">
+          <span *ngIf="loginFrom.controls.loginMail.errors.required">Email is required</span>
+          <span *ngIf="loginFrom.controls.loginMail.errors.email">Email is unknown</span>
+        </div>
       </div>
       <div class="form-group">
         <label for="loginPassword">Password</label>
-        <input type="password" class="form-control" name="loginPassword" id="loginPassword" placeholder="Password" autocomplete="current-password">
+        <input type="password" class="form-control" name="loginPassword" id="loginPassword" placeholder="Password" autocomplete="current-password" formControlName="loginPassword" [ngClass]="{'is-invalid': hasSubmitted && loginFrom.controls.loginPassword.errors}">
+        <div *ngIf="hasSubmitted && loginFrom.controls.loginPassword.errors" class="invalid-feedback d-block">
+          <span *ngIf="loginFrom.controls.loginPassword.errors.required">Password is required</span>
+          <span *ngIf="loginFrom.controls.loginPassword.errors.minlength">Wrong Password</span>
+        </div>
       </div>
       <button type="submit" class="btn btn-secondary">Login</button>
     </form>
