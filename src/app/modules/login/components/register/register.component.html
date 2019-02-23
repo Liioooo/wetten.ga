@@ -1,7 +1,7 @@
 <div class="w-100">
   <div class="m-auto pt-3 login-container">
     <h3>Register</h3>
-    <form formGroup="registerFrom" class="mb-2" (submit)="registerClick()">
+    <form [formGroup]="registerFrom" class="mb-2" (submit)="registerClick()">
       <div class="form-group">
         <label for="registerMail">Email address</label>
         <input type="email" class="form-control" name="loginMail" id="registerMail" placeholder="Enter email" formControlName="registerMail" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.registerMail.errors}" autocomplete="username">

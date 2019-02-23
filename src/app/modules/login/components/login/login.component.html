@@ -1,7 +1,7 @@
 <div class="w-100">
   <div class="m-auto pt-3 login-container">
     <h3>Login</h3>
-    <form formGroup="loginFrom" class="mb-4" (submit)="loginEmailClicked()">
+    <form [formGroup]="loginFrom" class="mb-4" (submit)="loginEmailClicked()">
       <div class="form-group">
         <label for="loginMail">Email address</label>
         <input type="email" class="form-control" name="loginMail" id="loginMail" placeholder="Enter email" autocomplete="username" formControlName="loginMail" [ngClass]="{'is-invalid': hasSubmitted && loginFrom.controls.loginMail.errors}">
