@@ -26,7 +26,7 @@ export class AuthService {
   ) {
       this._user$ = this.fireAuth.authState.pipe(
           switchMap(user => {
-              if (user) {
+              if (user && (user.providerData[0]['providerId'] !== 'password' || (user.providerData[0]['providerId'] === 'password' && user.emailVerified))) {
                   this._userRef = this.afs.doc<User>(`users/${user.uid}`);
                   return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
               } else {
@@ -61,7 +61,11 @@ export class AuthService {
   public async signInEmail(email: string, password: string) {
       try {
           await this.fireAuth.auth.signInWithEmailAndPassword(email, password);
-          this.router.navigate(['/home']);
+          if (this.fireAuth.auth.currentUser.emailVerified) {
+              this.router.navigate(['/home']);
+          } else {
+              this.router.navigate(['/login/verify-email']);
+          }
       } catch (e) {
           console.log(e);
           return e.code;
@@ -71,16 +75,22 @@ export class AuthService {
   public async signUpEmail(email: string, password: string, name: string) {
       try {
           const credential = await this.fireAuth.auth.createUserWithEmailAndPassword(email, password);
+          await this.fireAuth.auth.currentUser.sendEmailVerification();
           await credential.user.updateProfile({
               displayName: name,
               photoURL: '/assets/default-profile-img.jpg'
           });
-          this.router.navigate(['/home']);
+          this.router.navigate(['/login/verify-email']);
           return this.updateUserDataEmail(credential);
       } catch (e) {
           console.error(e);
           return e.code;
       }
+  }
+
+  public async sendVerificationMailAgain() {
+      await this.fireAuth.auth.currentUser.sendEmailVerification();
+      this.toastrService.success('Verification email was sent successfully', 'Email sent');
   }
 
   async signOut() {

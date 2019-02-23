@@ -1,0 +1,20 @@
+@import "../../../../mixins";
+@import "~bootswatch/dist/flatly/variables";
+
+.info-container {
+  width: 95%;
+
+  @include mediaQuery(450px, min) {
+    width: 400px;
+  }
+
+  a {
+    color: #18BC9C;;
+
+    &:hover {
+      color: #18BC9C;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}
