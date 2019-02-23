@@ -98,6 +98,11 @@ export class AuthService {
     this.router.navigate(['/home']);
   }
 
+  async signOutEmailVerification() {
+      await this.fireAuth.auth.signOut();
+      this.router.navigate(['/login/login']);
+  }
+
   private updateUserDataEmail(credentials) {
       credentials.additionalUserInfo.profile = {
         gender: null,

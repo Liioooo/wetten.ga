@@ -9,7 +9,7 @@ import {NavigationEnd, Router} from '@angular/router';
   styleUrls: ['./app.component.scss'],
   animations: [
     trigger('routerTransition', [
-      transition('roulette => home, dashboard => roulette, dashboard => home, loginLogin => home, loginLogin => roulette, loginRegister => home, loginRegister => roulette', [
+      transition('roulette => home, dashboard => roulette, dashboard => home, loginLogin => home, loginLogin => roulette, loginRegister => home, loginRegister => roulette, loginVerify => home, loginVerify => roulette', [
         style({ height: '!' }),
 
         query(':enter, :leave', style({ position: 'absolute', left: 0, right: 0 })),
@@ -37,7 +37,7 @@ import {NavigationEnd, Router} from '@angular/router';
           query(':enter', animate('0.3s cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)' }))),
         ])
       ]),
-      transition('loginLogin <=> loginRegister', [
+      transition('loginLogin <=> loginRegister, loginLogin <=> loginVerify, loginRegister <=> loginVerify', [
         query(':enter, :leave', style({ position: 'absolute', left: 0, right: 0, opacity: 1 })),
         group([
           query(':enter', [

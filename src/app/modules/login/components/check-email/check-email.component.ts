@@ -17,4 +17,8 @@ export class CheckEmailComponent implements OnInit {
     this.authService.sendVerificationMailAgain();
   }
 
+  public hasVerifiedClicked() {
+    this.authService.signOutEmailVerification();
+  }
+
 }
