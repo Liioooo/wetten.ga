@@ -8,6 +8,7 @@
         <div *ngIf="hasSubmitted && registerFrom.controls.registerMail.errors" class="invalid-feedback d-block">
           <span *ngIf="registerFrom.controls.registerMail.errors.required">Email is required</span>
           <span *ngIf="registerFrom.controls.registerMail.errors.email">Email is not valid</span>
+          <span *ngIf="registerFrom.controls.registerMail.errors.emailInUse">Email is in use by another account</span>
         </div>
       </div>
       <div class="form-group">

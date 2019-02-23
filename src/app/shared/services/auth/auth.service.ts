@@ -58,17 +58,38 @@ export class AuthService {
       }
   }
 
-  public signInEmail(email: string, password: string, name: string) {
+  public signInEmail(email: string, password: string) {
 
   }
 
-  public signUp(email: string, password: string) {
-
+  public async signUpEmail(email: string, password: string, name: string) {
+      try {
+          const credential = await this.fireAuth.auth.createUserWithEmailAndPassword(email, password);
+          await credential.user.updateProfile({
+              displayName: name,
+              photoURL: '/assets/default-profile-img.jpg'
+          });
+          this.router.navigate(['/home']);
+          return this.updateUserDataEmail(credential);
+      } catch (e) {
+          console.error(e);
+          return e.code;
+      }
   }
 
   async signOut() {
     await this.fireAuth.auth.signOut();
     this.router.navigate(['/home']);
+  }
+
+  private updateUserDataEmail(credentials) {
+      credentials.additionalUserInfo.profile = {
+        gender: null,
+        last_name: null,
+        first_name: null,
+        location: null
+      };
+      return this.updateUserData(credentials);
   }
 
   private updateUserData(credentials) {
