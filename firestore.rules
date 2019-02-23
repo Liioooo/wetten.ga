@@ -1,26 +1,29 @@
 service cloud.firestore {
   match /databases/{database}/documents {
 
-		match /coinTransactions/{transactionId} {
-    	allow create: if get(futureDocument().from).data.uid == currentUser().uid
-      								 && futureDocument().amount <= getUserData().amount
-                       && get(futureDocument().to).data.uid != currentUser().uid;
+	match /coinTransactions/{transactionId} {
+        allow create: if get(futureDocument().from).data.uid == currentUser().uid
+      			   && futureDocument().amount <= getUserData().amount
+                      && get(futureDocument().to).data.uid != currentUser().uid
+                      && hasEmailVerified();
     }
 
-		match /bets/{userId} {
-    	allow read;
-      allow update: if isOwner(userId) && validateAmounts();
+	match /bets/{userId} {
+        allow read;
+           allow update: if isOwner(userId)
+      					 	&& hasEmailVerified()
+      						&& validateAmounts();
     }
 
     function validateAmounts() {
     	return checkMinusAmount('redAmount') && checkMinusAmount('blackAmount')
-      			 && checkMinusAmount('greenAmount') && checkSums();
+      		   && checkMinusAmount('greenAmount') && checkSums();
     }
 
     function checkSums() {
     	return futureDocument().redAmount +
-      			 futureDocument().blackAmount +
-             futureDocument().greenAmount <= getUserData().amount
+      		   futureDocument().blackAmount +
+               futureDocument().greenAmount <= getUserData().amount
     }
 
     function checkMinusAmount(property) {
@@ -33,18 +36,22 @@ service cloud.firestore {
 
     match /chat/{document=**} {
     	allow read;
-      allow create: if isSignedIn();
+        allow create: if isSignedIn() && hasEmailVerified();
     }
 
     match /users/{userId} {
       allow update: if isOwner(userId)
-    								&& (!has('amount') || futureDocument().amount == currentDocument().amount);
-      allow create: if isOwner(userId) && !has('amount') && !userDocExists();
+      							&& hasEmailVerified()
+    							&& (!has('amount') || futureDocument().amount == currentDocument().amount);
+      allow create: if isOwner(userId)
+      							&& !has('amount') && !userDocExists();
     }
 
     match /users/{document=**} {
     	allow read;
     }
+
+
 
     // true or false depending on matching of the passed userId with the current authenticated one
     function isOwner(userId) {
@@ -53,35 +60,36 @@ service cloud.firestore {
 
     // true or false depending if email is verified (only works for custom login with email & pass)
     function hasEmailVerified() {
-    	return request.auth.token.email_verified;
+    	return request.auth.token.firebase.sign_in_provider != 'password' ||
+      		   (request.auth.token.firebase.sign_in_provider == 'password' && request.auth.token.email_verified);
     }
 
     // true or false depending on auth state
     function isSignedIn() {
-      return request.auth != null;
+        return request.auth != null;
     }
 
     // Get current user document
     function getUserData() {
   		return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
-		}
+	}
 
-		// Get Document after operation
+	// Get Document after operation
     function futureDocument() {
       return request.resource.data;
     }
 
-		// Get current state without operation of requested Document
-		function currentDocument() {
+	// Get current state without operation of requested Document
+	function currentDocument() {
     	return resource.data;
     }
 
-		// Get current authenticated user
+	// Get current authenticated user
     function currentUser() {
       return request.auth;
     }
 
-		// Check if POST data is containting specific property
+	// Check if POST data is containting specific property
     function has(property) {
     	return property in futureDocument();
     }
