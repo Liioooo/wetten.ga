@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '@shared/services/auth/auth.service';
 import {Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
 
@@ -29,6 +29,7 @@ export class TransferCoinsComponent implements OnInit, OnDestroy {
        'transferTo': ['', [Validators.required, Validators.email]]
     });
     this.balanceSubscription = this.authService.user$.pipe(
+      filter(user => user !== null),
       map(user => user.amount)
     ).subscribe(balance => this.balance = balance);
   }

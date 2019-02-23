@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
         this.authService.signIn(type);
     }
 
-    public loginEmailClicked() {
+    public async loginEmailClicked() {
         this.hasSubmitted = true;
         if (this.loginFrom.invalid) {
            return;
@@ -40,6 +40,13 @@ export class LoginComponent implements OnInit {
 
         const email = this.loginFrom.controls.loginMail.value;
         const password = this.loginFrom.controls.loginPassword.value;
+
+        const response = await this.authService.signInEmail(email, password);
+        if (response === 'auth/wrong-password') {
+            this.loginFrom.controls.loginPassword.setErrors({invalidPassword: true});
+        } else if (response === 'auth/user-not-found') {
+            this.loginFrom.controls.loginMail.setErrors({notFound: true});
+        }
     }
 
 }

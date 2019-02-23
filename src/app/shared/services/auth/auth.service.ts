@@ -58,8 +58,14 @@ export class AuthService {
       }
   }
 
-  public signInEmail(email: string, password: string) {
-
+  public async signInEmail(email: string, password: string) {
+      try {
+          await this.fireAuth.auth.signInWithEmailAndPassword(email, password);
+          this.router.navigate(['/home']);
+      } catch (e) {
+          console.log(e);
+          return e.code;
+      }
   }
 
   public async signUpEmail(email: string, password: string, name: string) {

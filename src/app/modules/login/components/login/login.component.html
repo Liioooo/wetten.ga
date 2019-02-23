@@ -7,7 +7,7 @@
         <input type="email" class="form-control" name="loginMail" id="loginMail" placeholder="Enter email" autocomplete="username" formControlName="loginMail" [ngClass]="{'is-invalid': hasSubmitted && loginFrom.controls.loginMail.errors}">
         <div *ngIf="hasSubmitted && loginFrom.controls.loginMail.errors" class="invalid-feedback d-block">
           <span *ngIf="loginFrom.controls.loginMail.errors.required">Email is required</span>
-          <span *ngIf="loginFrom.controls.loginMail.errors.email">Email is unknown</span>
+          <span *ngIf="loginFrom.controls.loginMail.errors.email || loginFrom.controls.loginMail.errors.notFound">Email is unknown</span>
         </div>
       </div>
       <div class="form-group">
@@ -15,7 +15,7 @@
         <input type="password" class="form-control" name="loginPassword" id="loginPassword" placeholder="Password" autocomplete="current-password" formControlName="loginPassword" [ngClass]="{'is-invalid': hasSubmitted && loginFrom.controls.loginPassword.errors}">
         <div *ngIf="hasSubmitted && loginFrom.controls.loginPassword.errors" class="invalid-feedback d-block">
           <span *ngIf="loginFrom.controls.loginPassword.errors.required">Password is required</span>
-          <span *ngIf="loginFrom.controls.loginPassword.errors.minlength">Wrong Password</span>
+          <span *ngIf="loginFrom.controls.loginPassword.errors.minlength || loginFrom.controls.loginPassword.errors.invalidPassword">Wrong Password</span>
         </div>
       </div>
       <button type="submit" class="btn btn-secondary">Login</button>
