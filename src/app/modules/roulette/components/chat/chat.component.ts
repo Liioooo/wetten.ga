@@ -18,10 +18,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     @ViewChild('scrollElement') scrollElement;
 
     public messages: Message[];
+    public chatForm: FormGroup;
     private messageSubscription: Subscription;
     private newMessageSubscription: Subscription;
     private loggedInSubscription: Subscription;
-    private chatForm: FormGroup;
     private lastTimeSent = 0;
 
     constructor(public authService: AuthService, public chatService: ChatService, private formBuilder: FormBuilder) {

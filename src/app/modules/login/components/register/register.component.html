@@ -1,10 +1,10 @@
 <div class="w-100">
   <div class="m-auto pt-3 login-container">
     <h3>Register</h3>
-    <form [formGroup]="registerFrom" class="mb-2" (submit)="registerClick()">
+    <form formGroup="registerFrom" class="mb-2" (submit)="registerClick()">
       <div class="form-group">
         <label for="registerMail">Email address</label>
-        <input type="email" class="form-control" name="loginMail" id="registerMail" placeholder="Enter email" formControlName="registerMail" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.registerMail.errors}">
+        <input type="email" class="form-control" name="loginMail" id="registerMail" placeholder="Enter email" formControlName="registerMail" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.registerMail.errors}" autocomplete="username">
         <div *ngIf="hasSubmitted && registerFrom.controls.registerMail.errors" class="invalid-feedback d-block">
           <span *ngIf="registerFrom.controls.registerMail.errors.required">Email is required</span>
           <span *ngIf="registerFrom.controls.registerMail.errors.email">Email is not valid</span>
@@ -12,7 +12,7 @@
       </div>
       <div class="form-group">
         <label for="name">Nickname</label>
-        <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Display Name" formControlName="name" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.name.errors}">
+        <input autocomplete="nickname" type="text" class="form-control" name="name" id="name" placeholder="Enter your Display Name" formControlName="name" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.name.errors}">
         <div *ngIf="hasSubmitted && registerFrom.controls.name.errors" class="invalid-feedback d-block">
           <span *ngIf="registerFrom.controls.name.errors.required">Nickname is required</span>
           <span *ngIf="registerFrom.controls.name.errors.maxlength">Your Nickname is too long</span>
@@ -20,12 +20,12 @@
       </div>
       <div class="form-group">
         <label for="registerPassword">Password</label>
-        <input type="password" class="form-control" name="loginPassword" id="registerPassword" placeholder="Password" formControlName="registerPassword" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.registerPassword.errors}">
+        <input type="password" class="form-control" name="loginPassword" id="registerPassword" placeholder="Password" formControlName="registerPassword" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.registerPassword.errors}" autocomplete="new-password">
         <div *ngIf="hasSubmitted && registerFrom.controls.registerPassword.errors" class="invalid-feedback d-block">
           <span *ngIf="registerFrom.controls.registerPassword.errors.required">Password is required</span>
           <span *ngIf="registerFrom.controls.registerPassword.errors.minlength">Your Password is too short</span>
         </div>
-        <input type="password" class="form-control mt-2" name="loginPassword" id="registerPasswordRepeat" placeholder="Repeat Password" formControlName="registerPasswordRepeat" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.registerPasswordRepeat.errors}">
+        <input type="password" class="form-control mt-2" name="loginPassword" id="registerPasswordRepeat" placeholder="Repeat Password" formControlName="registerPasswordRepeat" [ngClass]="{'is-invalid': hasSubmitted && registerFrom.controls.registerPasswordRepeat.errors}" autocomplete="new-password">
         <div *ngIf="hasSubmitted && registerFrom.controls.registerPasswordRepeat.errors" class="invalid-feedback d-block">
           <span *ngIf="registerFrom.controls.registerPasswordRepeat.errors.required">Password must be repeated</span>
           <span *ngIf="registerFrom.controls.registerPasswordRepeat.errors.matchPassword">Passwords do not match</span>
