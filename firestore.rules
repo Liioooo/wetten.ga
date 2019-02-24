@@ -1,14 +1,19 @@
 service cloud.firestore {
   match /databases/{database}/documents {
 
-	match /coinTransactions/{transactionId} {
+		match /coinTransactions/{transactionId} {
         allow create: if get(futureDocument().from).data.uid == currentUser().uid
-      			   && futureDocument().amount <= getUserData().amount
+      			   				&& futureDocument().amount + getBetDoc().redAmount + getBetDoc().greenAmount +
+                      getBetDoc().blackAmount <= getUserData().amount
                       && get(futureDocument().to).data.uid != currentUser().uid
                       && hasEmailVerified();
     }
 
-	match /bets/{userId} {
+    function getBetDoc() {
+    	return get(/databases/$(database)/documents/bets/$(request.auth.uid)).data;
+    }
+
+		match /bets/{userId} {
         allow read;
            allow update: if isOwner(userId)
       					 	&& hasEmailVerified()
