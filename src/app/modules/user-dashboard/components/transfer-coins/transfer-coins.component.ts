@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '@shared/services/auth/auth.service';
 import {Subscription} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
+import {BetService} from '@shared/services/bet/bet.service';
+import {AuthService} from '@shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-transfer-coins',
@@ -18,7 +18,8 @@ export class TransferCoinsComponent implements OnInit, OnDestroy {
   private balanceSubscription: Subscription;
 
   constructor(
-      public authService: AuthService,
+      private authService: AuthService,
+      private betService: BetService,
       private formBuilder: FormBuilder,
       private toastrService: ToastrService
   ) { }
@@ -28,10 +29,7 @@ export class TransferCoinsComponent implements OnInit, OnDestroy {
        'amountToTransfer': ['', [Validators.required, Validators.min(1)]],
        'transferTo': ['', [Validators.required, Validators.email]]
     });
-    this.balanceSubscription = this.authService.user$.pipe(
-      filter(user => user !== null),
-      map(user => user.amount)
-    ).subscribe(balance => this.balance = balance);
+    this.balanceSubscription = this.betService.currentBalance.subscribe(balance => this.balance = balance);
   }
 
   public sendCoinsSubmit() {

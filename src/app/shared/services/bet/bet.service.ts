@@ -68,16 +68,15 @@ export class BetService implements OnDestroy {
   }
 
   get currentBalance(): Observable<number> {
-        return this.bets.pipe(
-            mergeMap(bets => {
-                return this.authService.user$.pipe(
-                    map(user => user.amount),
-                    map(balance => {
-                        return balance - bets.blackAmount - bets.greenAmount - bets.redAmount;
-                    })
-                );
-            })
-        );
+      return this.authService.user$.pipe(
+          switchMap(user => {
+              return this.bets.pipe(
+                  map(bets => {
+                      return user.amount - bets.blackAmount - bets.greenAmount - bets.redAmount;
+                  })
+              );
+          })
+      );
   }
 
   async setBet(bet: string) {
