@@ -1,11 +1,11 @@
 import * as functions from 'firebase-functions';
-import * as sendgridemail from '@sendgrid/mail';
-import {SENDGRID_API_KEY} from './environment';
+// import * as sendgridemail from '@sendgrid/mail';
+// import {SENDGRID_API_KEY} from './environment';
 import {User} from './models/User';
 import * as admin from 'firebase-admin';
 
 const db = admin.firestore();
-sendgridemail.setApiKey(SENDGRID_API_KEY);
+// sendgridemail.setApiKey(SENDGRID_API_KEY);
 
 
 export const newUser = functions.firestore
@@ -25,16 +25,16 @@ export const newUser = functions.firestore
       user: event.ref
     }, {merge: true});
 
-    try {
-      return sendgridemail.send({
-        to: userData.email,
-        from: 'leo@leo.com',
-        subject: 'Servas',
-        text: 'das geht so nid',
-        html: '<strong>hey</strong>'
-      });
-    } catch (e) {
-      console.log('Error sending email!');
-      return;
-    }
+    // try {
+    //   return sendgridemail.send({
+    //     to: userData.email,
+    //     from: 'leo@leo.com',
+    //     subject: 'Servas',
+    //     text: 'das geht so nid',
+    //     html: '<strong>hey</strong>'
+    //   });
+    // } catch (e) {
+    //   console.log('Error sending email!');
+    //   return;
+    // }
   });
