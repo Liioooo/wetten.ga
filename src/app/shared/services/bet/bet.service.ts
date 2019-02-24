@@ -1,9 +1,9 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {combineLatest, Observable, ObservableInput, of, Subscription} from 'rxjs';
+import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {Bet} from '../../models/Bet';
-import {map, mergeMap, switchMap} from 'rxjs/operators';
+import { map, mergeMap, multicast, switchMap} from 'rxjs/operators';
 import {joinCollections} from '../../rxjs-operators/joinCollections';
 import {ToastrService} from 'ngx-toastr';
 
@@ -37,10 +37,34 @@ export class BetService implements OnDestroy {
   }
 
   get allBets(): Observable<Bet[]> {
-      return this.afs.collection<Bet>('bets').valueChanges()
-          .pipe(
-             joinCollections('user', 'uid', 'users', this.afs)
-          );
+    const red$ = this.afs.collection<Bet>('bets', ref => ref.where('redAmount', '>', 0))
+      .snapshotChanges();
+    const green$ = this.afs.collection<Bet>('bets', ref => ref.where('greenAmount', '>', 0))
+      .snapshotChanges();
+    const black$ = this.afs.collection<Bet>('bets', ref => ref.where('blackAmount', '>', 0))
+      .snapshotChanges();
+
+    return combineLatest<any[]>(red$, green$, black$)
+      .pipe(
+        switchMap(all => of([...all[0], ...all[1], ...all[2]])),
+        map(snap => {
+          const bets = [];
+          for (let i = 0; i < snap.length; i++) {
+            let included = false;
+            for (let j = 0; j < bets.length; j++) {
+              if (snap[i].payload.doc.id === bets[j].payload.doc.id) {
+                included = true;
+                break;
+              }
+            }
+            if (!included) {
+              bets.push(snap[i]);
+            }
+          }
+          return bets.map(bet => bet.payload.doc.data());
+        }),
+        joinCollections('user', 'uid', 'users', this.afs),
+      );
   }
 
   get currentBalance(): Observable<number> {

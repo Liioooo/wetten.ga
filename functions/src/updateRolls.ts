@@ -43,7 +43,6 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
   const tempBets = [...betsRed, ...betsGreen, ...betsBlack];
   const bets: QueryDocumentSnapshot[] = [];
   for (let i = 0; i < tempBets.length; i++) {
-    console.log(tempBets[i].data());
     let included = false;
     for (let j = 0; j < bets.length; j++) {
       if(tempBets[i].isEqual(bets[j])) {
