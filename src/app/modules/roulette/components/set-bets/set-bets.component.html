@@ -14,8 +14,8 @@
     </thead>
     <tbody>
     <tr *ngFor="let bet of bets | async">
-      <td>{{bet.name}}</td>
-      <td>{{bet.amount | number:'1.0-2'}}</td>
+      <td><img class="userImg rounded-circle" [src]="bet.user.photoURL" alt="profile-picture"> {{bet.user.displayName}}</td>
+      <td>{{bet[typeKey] | number:'1.0-2'}}</td>
     </tr>
     </tbody>
   </table>

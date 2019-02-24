@@ -17,7 +17,7 @@ export class SetBetsComponent implements OnInit {
   type: '1-7' | '8-14' | '0';
 
   private typeKey: string;
-  public bets: Observable<{name, amount}[]>;
+  public bets: Observable<any>;
 
   constructor(
     public authService: AuthService,
@@ -27,12 +27,10 @@ export class SetBetsComponent implements OnInit {
 
   ngOnInit() {
     this.typeKey = this.getKeyForType(this.type);
-    this.bets = this.betService.allBets.pipe(
-        map(bets => bets.filter(bet => (bet[this.typeKey] !== undefined && bet[this.typeKey] !== 0))),
-        map(bets => bets.map(bet => {
-          return {name: bet.user['displayName'], amount: bet[this.typeKey]};
-        }))
-    );
+    this.bets = this.betService.allBets
+      .pipe(
+        map(bets => bets.filter(bet => bet[this.typeKey] > 0))
+      );
   }
 
 
