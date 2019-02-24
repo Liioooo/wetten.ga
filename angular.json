@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "lio-roulette": {
+    "wetten.ga": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "lio-roulette:build"
+            "browserTarget": "wetten.ga:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "lio-roulette:build:production"
+              "browserTarget": "wetten.ga:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "lio-roulette:build"
+            "browserTarget": "wetten.ga:build"
           }
         },
         "test": {
@@ -116,7 +116,7 @@
         }
       }
     },
-    "lio-roulette-e2e": {
+    "wetten.ga-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -125,11 +125,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "lio-roulette:serve"
+            "devServerTarget": "wetten.ga:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "lio-roulette:serve:production"
+              "devServerTarget": "wetten.ga:serve:production"
             }
           }
         },
@@ -145,5 +145,5 @@
       }
     }
   },
-  "defaultProject": "lio-roulette"
+  "defaultProject": "wetten.ga"
 }
