@@ -6,36 +6,36 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <url>
-    <loc>http://www.yoururl.com/</loc>
+    <loc>https://wetten.ga/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
 
   <url>
-    <loc>http://www.wetten.ga/roulette</loc>
+    <loc>https://www.wetten.ga/roulette</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>http://www.wetten.ga/login</loc>
+    <loc>https://www.wetten.ga/login</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>http://www.wetten.ga/login/register</loc>
+    <loc>https://www.wetten.ga/login/register</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>http://www.wetten.ga/home</loc>
+    <loc>https://www.wetten.ga/home</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://www.wetten.ga/user-dashboard</loc>
+    <loc>https://www.wetten.ga/user-dashboard</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
