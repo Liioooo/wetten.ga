@@ -3,4 +3,4 @@ Allow: /
 Disallow: /assets/ 
 
 
-Sitemap: sitemap.xml 
+Sitemap: https://wetten.ga/sitemap.xml
