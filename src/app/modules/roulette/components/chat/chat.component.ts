@@ -69,12 +69,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.chatForm.reset();
     }
 
-    checkEnter({keyCode}: KeyboardEvent) {
-      if (keyCode === 13) {
-        this.sendMessage();
-      }
-    }
-
     getTimeForTimestamp(timestamp: Timestamp): string {
         const date = timestamp.toDate();
         return `${this.formatNumbersForTime(date.getHours())}:${this.formatNumbersForTime(date.getMinutes())}`;

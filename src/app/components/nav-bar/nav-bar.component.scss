@@ -1,13 +1,8 @@
 .login-link {
-
   color: white;
 
-  &:focus {
-    outline: none;
-  }
-
   &:hover {
-    cursor: pointer;
+    text-decoration: none;
     color: #18BC9C;
 
     .login-img {
@@ -41,11 +36,7 @@
 
 .user-bar {
 
-  &:focus {
-    outline: 0;
-  }
-
   &:hover {
-    cursor: pointer;
+    text-decoration: none;
   }
 }
