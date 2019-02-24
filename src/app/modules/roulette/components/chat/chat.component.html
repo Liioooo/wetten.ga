@@ -18,9 +18,9 @@
         </div>
     </div>
     <form [formGroup]="chatForm" class="input-group">
-        <input type="text" class="form-control" name="chatMessage" formControlName="chatMessage" (keydown)="checkEnter($event)" placeholder="Your Message">
+        <input type="text" class="form-control" name="chatMessage" formControlName="chatMessage" (keydown.enter)="sendMessage()" placeholder="Your Message">
         <div class="input-group-append">
-            <button class="btn btn-primary" tabindex="0" (keydown.enter)="sendMessage()" [disabled]="!(authService.user$ | async) || chatForm.invalid" (click)="sendMessage()">Send</button>
+            <button class="btn btn-primary" tabindex="0" [disabled]="!(authService.user$ | async) || chatForm.invalid" (click)="sendMessage()">Send</button>
         </div>
         <div *ngIf="chatForm.controls.chatMessage.errors && chatForm.controls.chatMessage.errors.maxlength" class="invalid-feedback d-block">
             Message is too long!
