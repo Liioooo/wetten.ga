@@ -9,9 +9,13 @@ div {
     height: 300px;
     width: 100%;
     overflow: auto;
+    overflow-x: hidden;
     @include scrollbar(8px);
 
-
+    .faster {
+      -webkit-animation-duration: 210ms;
+      animation-duration: 210ms;
+    }
 
     .sent-by-logged-in {
       flex-direction: row-reverse;
@@ -27,7 +31,7 @@ div {
     .message {
       min-height: 30px;
       max-width: 100%;
-      overflow: hidden;
+      word-break: break-all;
 
       .bg-secondary-lighten {
         background-color: lighten(#6c757d, 50);
