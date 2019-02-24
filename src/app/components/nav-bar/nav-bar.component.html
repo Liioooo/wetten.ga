@@ -2,7 +2,7 @@
 
   <a class="navbar-brand" routerLink="/home">{{projectName}}</a>
 
-  <button class="navbar-toggler" type="button" (click)="collapsed = !collapsed">
+  <button aria-label="menu-toggler" class="navbar-toggler" type="button" (click)="collapsed = !collapsed">
     <span class="navbar-toggler-icon"></span>
   </button>
 
@@ -22,19 +22,19 @@
         <div *ngIf="authService.user$ | async; then loggedIn else notLoggedIn;"></div>
 
         <ng-template #notLoggedIn>
-          <div routerLink="/login" class="d-flex justify-content-end align-items-center login-link" routerLinkActive="login-active">
-            <p class="mb-0">Login / Register</p>
+          <a routerLink="/login" class="d-flex justify-content-end align-items-center login-link" routerLinkActive="login-active">
+            <p class="mb-0">Login or Register</p>
             <a class="login-img userImg ml-2">
               <!--<img class="userImg" src="/assets/login.svg" alt="google-icon">-->
             </a>
-          </div>
+          </a>
         </ng-template>
 
         <ng-template #loggedIn>
-          <div *ngIf="authService.user$ | async as user" class="user-bar d-flex justify-content-between" routerLinkActive="active" routerLink="/user-dashboard">
+          <a *ngIf="authService.user$ | async as user" class="user-bar d-flex justify-content-between" routerLinkActive="active" routerLink="/user-dashboard">
             <a class="nav-link">{{user.displayName}}</a>
             <img class="userImg rounded-circle" [src]="user.photoURL" alt="profile-picture">
-          </div>
+          </a>
         </ng-template>
       </li>
     </ul>

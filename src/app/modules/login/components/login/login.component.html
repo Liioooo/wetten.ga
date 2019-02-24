@@ -22,15 +22,15 @@
     </form>
 
     <h4>Or sign in with one of these services</h4>
-    <div class="login-with-container p-2 bg-light d-flex align-items-center mb-2" (click)="loginClicked('Google')">
+    <div tabindex="0" class="login-with-container p-2 bg-light d-flex align-items-center mb-2" (keydown.enter)="loginClicked('Google')" (click)="loginClicked('Google')">
       <img src="assets/google-login.svg">
       <h4 class="mb-0 ml-4">Google</h4>
     </div>
-    <div class="login-with-container p-2 bg-light d-flex align-items-center mb-2" (click)="loginClicked('Facebook')">
+    <div tabindex="0" class="login-with-container p-2 bg-light d-flex align-items-center mb-2" (keydown.enter)="loginClicked('Facebook')" (click)="loginClicked('Facebook')">
       <img src="assets/facebook-login.svg">
       <h4 class="mb-0 ml-4">Facebook</h4>
     </div>
-    <div class="login-with-container p-2 bg-light d-flex align-items-center mb-2" (click)="loginClicked('Twitter')">
+    <div tabindex="0" class="login-with-container p-2 bg-light d-flex align-items-center mb-2" (keydown.enter)="loginClicked('Twitter')" (click)="loginClicked('Twitter')">
       <img src="assets/twitter-login.svg">
       <h4 class="mb-0 ml-4">Twitter</h4>
     </div>
