@@ -3,7 +3,7 @@ import {AuthService} from '../auth/auth.service';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {Bet} from '../../models/Bet';
-import { map, mergeMap, multicast, switchMap} from 'rxjs/operators';
+import {debounce, map, mergeMap, multicast, switchMap} from 'rxjs/operators';
 import {joinCollections} from '../../rxjs-operators/joinCollections';
 import {ToastrService} from 'ngx-toastr';
 

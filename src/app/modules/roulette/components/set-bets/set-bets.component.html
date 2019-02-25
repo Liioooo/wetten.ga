@@ -1,7 +1,7 @@
 <div class="border rounded p-1" [ngSwitch]="type">
-  <h4 class="text-center" *ngSwitchCase="'1-7'" >{{ (betService.bets | async)?.redAmount || 0}}</h4>
-  <h4 class="text-center" *ngSwitchCase="'0'" >{{ (betService.bets | async)?.greenAmount || 0}}</h4>
-  <h4 class="text-center" *ngSwitchCase="'8-14'" >{{ (betService.bets | async)?.blackAmount || 0}}</h4>
+  <h4 class="text-center" *ngSwitchCase="'1-7'" >{{ ((betService.bets | async)?.redAmount | number:'1.0-2') || 0}}</h4>
+  <h4 class="text-center" *ngSwitchCase="'0'" >{{ ((betService.bets | async)?.greenAmount | number:'1.0-2') || 0}}</h4>
+  <h4 class="text-center" *ngSwitchCase="'8-14'" >{{ ((betService.bets | async)?.blackAmount | number:'1.0-2') || 0}}</h4>
   <button (click)="placeBet('redAmount')" *ngSwitchCase="'1-7'" type="button" class="btn btn-danger btn-lg btn-block" [disabled]="!(authService.user$ | async)">1 - 7</button>
   <button (click)="placeBet('greenAmount')" *ngSwitchCase="'0'" type="button" class="btn btn-success btn-lg btn-block" [disabled]="!(authService.user$ | async)">0</button>
   <button (click)="placeBet('blackAmount')" *ngSwitchCase="'8-14'" type="button" class="btn btn-primary btn-lg btn-block" [disabled]="!(authService.user$ | async)">8 - 14</button>
