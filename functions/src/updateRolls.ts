@@ -7,25 +7,10 @@ type QueryDocumentSnapshot = admin.firestore.QueryDocumentSnapshot;
 const db = admin.firestore();
 
 export const updateRolls = functions.https.onRequest(async (req, resp) => {
-
-
-
-    const ref = db.collection('rolls');
     const newRoll: Roll = {
       rolledNumber: Math.floor(Math.random() * 15),
       timestamp: admin.firestore.Timestamp.now()
     };
-
-    const snapshot = await ref
-      .orderBy('timestamp')
-      .limit(1)
-      .get();
-    if (!snapshot.empty) {
-      const querySnap = snapshot.docs[0];
-      await querySnap.ref.delete();
-    }
-
-    await ref.add(newRoll);
 
   const betsRed: QueryDocumentSnapshot[] = (await db.collection('bets')
       .where("redAmount", ">", 0)
@@ -54,11 +39,12 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
       bets.push(tempBets[i]);
     }
   }
+  const waitArr: any = [];
     bets.forEach(bet => {
       console.log(bet.data());
       const betData = bet.data() as Bet;
       const {redAmount = 0, greenAmount = 0, blackAmount = 0} = betData;
-      db.runTransaction(transaction => transaction.get(betData.user)
+      waitArr.push(db.runTransaction(transaction => transaction.get(betData.user)
         .then(userDoc => {
           if (!userDoc.exists) { return; }
           console.log("doc exists")
@@ -80,10 +66,23 @@ export const updateRolls = functions.https.onRequest(async (req, resp) => {
             transaction.update(betData.user, { amount });
           }
           transaction.update(bet.ref, {redAmount: 0, blackAmount: 0, greenAmount: 0});
-        }))
-        .catch(console.error);
+        })));
 
     });
+
+    await Promise.all(waitArr);
+
+  const ref = db.collection('rolls');
+  const snapshot = await ref
+    .orderBy('timestamp')
+    .limit(1)
+    .get();
+  if (!snapshot.empty) {
+    const querySnap = snapshot.docs[0];
+    await querySnap.ref.delete();
+  }
+
+  await ref.add(newRoll);
 
 
   resp.send('updated rolls');
