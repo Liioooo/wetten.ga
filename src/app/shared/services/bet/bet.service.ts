@@ -1,11 +1,13 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {combineLatest, Observable, of, Subscription} from 'rxjs';
+import {combineLatest, Observable, of, Subscription, timer} from 'rxjs';
 import {Bet} from '../../models/Bet';
-import {debounce, delay, map, mergeMap, multicast, switchMap, tap} from 'rxjs/operators';
+import {debounce, delay, map, mergeMap, multicast, share, switchMap, tap} from 'rxjs/operators';
 import {joinCollections} from '../../rxjs-operators/joinCollections';
 import {ToastrService} from 'ngx-toastr';
+import {RouletteService} from '@shared/services/roullete/roullete.service';
+import {debounceWithoutFirst} from '@shared/rxjs-operators/debounceWithoutFirst';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,7 @@ export class BetService implements OnDestroy {
   private _bets: Observable<Bet>;
   
   constructor(
+    private rouletteService: RouletteService,
     private authService: AuthService,
     private afs: AngularFirestore,
     private toastrService: ToastrService
@@ -27,7 +30,15 @@ export class BetService implements OnDestroy {
       if (user) {
           const doc = this.afs.doc<Bet>(`bets/${user.uid}`);
           this.betDoc = doc;
-          this._bets = doc.valueChanges();
+          this._bets = doc.valueChanges().pipe(
+              debounce(all => {
+                  if (this.rouletteService.timeToNextRollValue < 4) {
+                      return this.rouletteService.animationFinished;
+                  } else {
+                      return of(undefined);
+                  }
+              }),
+          );
       }
     });
   }
@@ -46,24 +57,27 @@ export class BetService implements OnDestroy {
 
     return combineLatest<any[]>(red$, green$, black$)
       .pipe(
-        switchMap(all => of([...all[0], ...all[1], ...all[2]])),
-        map(snap => {
-          const bets = [];
-          for (let i = 0; i < snap.length; i++) {
-            let included = false;
-            for (let j = 0; j < bets.length; j++) {
-              if (snap[i].payload.doc.id === bets[j].payload.doc.id) {
-                included = true;
-                break;
+          switchMap(all => of([...all[0], ...all[1], ...all[2]])),
+          map(snap => {const bets = [];
+            for (let i = 0; i < snap.length; i++) {
+              let included = false;
+              for (let j = 0; j < bets.length; j++) {if (snap[i].payload.doc.id === bets[j].payload.doc.id) {
+                  included = true;
+                  break;
+                }
               }
+              if (!included) { bets.push(snap[i]); }
             }
-            if (!included) {
-              bets.push(snap[i]);
-            }
-          }
           return bets.map(bet => bet.payload.doc.data());
-        }),
-        joinCollections('user', 'uid', 'users', this.afs),
+          }),
+          joinCollections('user', 'uid', 'users', this.afs),
+          debounce(all => {
+              if (this.rouletteService.timeToNextRollValue < 4) {
+                  return this.rouletteService.animationFinished;
+              } else {
+                  return of(undefined);
+              }
+          }),
       );
   }
 

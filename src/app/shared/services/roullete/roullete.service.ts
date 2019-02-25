@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {interval, Observable, Subject} from 'rxjs';
 import {Roll} from '../../models/Roll';
-import {debounce, distinctUntilChanged, map, switchMap} from 'rxjs/operators';
+import {debounce, distinctUntilChanged, map, share, switchMap, tap} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {firestore} from 'firebase';
 import Timestamp = firestore.Timestamp;
@@ -13,6 +13,7 @@ import {debounceWithoutFirst} from '../../rxjs-operators/debounceWithoutFirst';
 export class RouletteService {
 
     public readonly ROLL_INTERVAL = 30;
+    public timeToNextRollValue: number;
 
     private readonly _animationFinished: Subject<any>;
     private readonly _rollHistory$: Observable<Roll[]>;
@@ -29,7 +30,8 @@ export class RouletteService {
                 return {id, ...data} as Roll;
               });
             }),
-            distinctUntilChanged((p: Roll[], q: Roll[]) => p[p.length - 1].timestamp.isEqual(q[q.length - 1].timestamp))
+            distinctUntilChanged((p: Roll[], q: Roll[]) => p[p.length - 1].timestamp.isEqual(q[q.length - 1].timestamp)),
+            share()
           ) as Observable<Roll[]>;
     }
 
@@ -65,11 +67,16 @@ export class RouletteService {
                       if (time < 0) {
                           time = 0;
                       }
+                      this.timeToNextRollValue = time;
                       return time;
                   })
               );
           })
         );
+    }
+
+    public get animationFinished(): Observable<any> {
+        return this._animationFinished.asObservable();
     }
 
     public finishedAnimation() {
