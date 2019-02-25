@@ -3,7 +3,7 @@ import {AuthService} from '../auth/auth.service';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {Bet} from '../../models/Bet';
-import {debounce, map, mergeMap, multicast, switchMap} from 'rxjs/operators';
+import {debounce, delay, map, mergeMap, multicast, switchMap, tap} from 'rxjs/operators';
 import {joinCollections} from '../../rxjs-operators/joinCollections';
 import {ToastrService} from 'ngx-toastr';
 
@@ -69,13 +69,17 @@ export class BetService implements OnDestroy {
 
   get currentBalance(): Observable<number> {
       return this.authService.user$.pipe(
-          switchMap(user => {
-              return this.bets.pipe(
-                  map(bets => {
-                      return user.amount - bets.blackAmount - bets.greenAmount - bets.redAmount;
-                  })
-              );
-          })
+        switchMap(u => {
+            return this.bets.pipe(
+                switchMap(bets => {
+                    return this.authService.user$.pipe(
+                        map(user => {
+                            return user.amount - bets.blackAmount - bets.greenAmount - bets.redAmount;
+                        })
+                    );
+                })
+            );
+        })
       );
   }
 

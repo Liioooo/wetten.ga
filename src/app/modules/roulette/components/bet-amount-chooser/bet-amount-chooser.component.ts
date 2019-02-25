@@ -9,7 +9,7 @@ import {BetService} from '@shared/services/bet/bet.service';
 })
 export class BetAmountChooserComponent implements OnInit, OnDestroy {
 
-  public balance = 0;
+  public balance: number;
   private balanceSubscription: Subscription;
 
   constructor(public betService: BetService) { }
