@@ -26,21 +26,13 @@ export class BetService implements OnDestroy {
     private afs: AngularFirestore,
     private toastrService: ToastrService
   ) {
-    this.subscription = this.authService.user$.subscribe(user => {
-      if (user) {
-          const doc = this.afs.doc<Bet>(`bets/${user.uid}`);
-          this.betDoc = doc;
-          this._bets = doc.valueChanges().pipe(
-              debounce(all => {
-                  if (this.rouletteService.timeToNextRollValue < 4) {
-                      return this.rouletteService.animationFinished;
-                  } else {
-                      return of(undefined);
-                  }
-              }),
-          );
-      }
-    });
+      this._bets = this.authService.user$.pipe(
+          switchMap(user => {
+              const doc = this.afs.doc<Bet>(`bets/${user.uid}`);
+              this.betDoc = doc;
+              return doc.valueChanges();
+          })
+      );
   }
 
   get bets(): Observable<Bet> {
@@ -72,7 +64,7 @@ export class BetService implements OnDestroy {
           }),
           joinCollections('user', 'uid', 'users', this.afs),
           debounce(all => {
-              if (this.rouletteService.timeToNextRollValue < 4) {
+              if (this.rouletteService.timeToNextRollValue < 3) {
                   return this.rouletteService.animationFinished;
               } else {
                   return of(undefined);
@@ -84,12 +76,19 @@ export class BetService implements OnDestroy {
   get currentBalance(): Observable<number> {
       return this.authService.user$.pipe(
           switchMap(user => {
-              return this.bets.pipe(
+              return this._bets.pipe(
                   map(bets => {
                       return user.amount - bets.blackAmount - bets.greenAmount - bets.redAmount;
                   })
               );
-          })
+          }),
+          debounce(all => {
+              if (this.rouletteService.timeToNextRollValue < 3) {
+                  return this.rouletteService.animationFinished;
+              } else {
+                  return of(undefined);
+              }
+          }),
       );
   }
 

@@ -1,9 +1,11 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../../../../shared/services/auth/auth.service';
+import {AuthService} from '@shared/services/auth/auth.service';
 import {BetService} from '@shared/services/bet/bet.service';
-import {Observable, Subscription} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {debounce, map, tap} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
+import {RouletteService} from '@shared/services/roullete/roullete.service';
+import {Bet} from '@shared/models/Bet';
 
 @Component({
   selector: 'app-set-bets',
@@ -17,9 +19,11 @@ export class SetBetsComponent implements OnInit {
   type: '1-7' | '8-14' | '0';
 
   private typeKey: string;
-  public bets: Observable<any>;
+  public allBets: Observable<any>;
+  public userBets: Observable<Bet>;
 
   constructor(
+    public rouletteService: RouletteService,
     public authService: AuthService,
     public betService: BetService,
     private toastrService: ToastrService
@@ -27,10 +31,19 @@ export class SetBetsComponent implements OnInit {
 
   ngOnInit() {
     this.typeKey = this.getKeyForType(this.type);
-    this.bets = this.betService.allBets
+    this.allBets = this.betService.allBets
       .pipe(
-        map(bets => bets.filter(bet => bet[this.typeKey] > 0))
+        map(bets => bets.filter(bet => bet[this.typeKey] > 0)),
       );
+    this.userBets = this.betService.bets.pipe(
+        debounce(all => {
+          if (this.rouletteService.timeToNextRollValue < 3) {
+            return this.rouletteService.animationFinished;
+          } else {
+            return of(undefined);
+          }
+        })
+    );
   }
 
 
