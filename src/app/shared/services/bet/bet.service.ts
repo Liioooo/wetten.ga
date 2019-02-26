@@ -73,7 +73,7 @@ export class BetService implements OnDestroy {
       );
   }
 
-  get currentBalance(): Observable<number> {
+  get currentBalanceWithAnimationDelay(): Observable<number> {
       return this.authService.user$.pipe(
           switchMap(user => {
               return this._bets.pipe(
@@ -91,6 +91,18 @@ export class BetService implements OnDestroy {
           }),
       );
   }
+
+    get currentBalance(): Observable<number> {
+        return this.authService.user$.pipe(
+            switchMap(user => {
+                return this._bets.pipe(
+                    map(bets => {
+                        return user.amount - bets.blackAmount - bets.greenAmount - bets.redAmount;
+                    })
+                );
+            })
+        );
+    }
 
   async setBet(bet: string) {
       const amount = await this.afs.firestore.runTransaction(async transaction => {

@@ -15,7 +15,7 @@ export class BetAmountChooserComponent implements OnInit, OnDestroy {
   constructor(public betService: BetService) { }
 
   ngOnInit() {
-    this.balanceSubscription = this.betService.currentBalance.subscribe(balance => {
+    this.balanceSubscription = this.betService.currentBalanceWithAnimationDelay.subscribe(balance => {
         this.balance = balance;
     });
   }
